@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    liff.init({ liffId: "YOUR_LIFF_ID" }).then(() => {
+    liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
         // LIFF初期化成功
     }).catch(err => {
         console.error('LIFF初期化エラー:', err);
