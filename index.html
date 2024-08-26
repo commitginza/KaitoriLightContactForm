@@ -84,31 +84,36 @@
         <hr>
         <div class="form-group">
             <label for="file1">正面 <span class="required">*</span></label>
-            <input type="file" id="file1" required>
+            <input type="file" id="file1" accept="image/*" required>
+            <input type="hidden" id="file1Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line1.png' alt='正面画像の例' style='width:200px;'>">サンプル画像</a>
         </div>
         <hr>
         <div class="form-group">
             <label for="file2">全体 <span class="required">*</span></label>
             <input type="file" id="file2" required>
+            <input type="hidden" id="file2Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line2.png' alt='全体画像の例' style='width:200px;'>">サンプル画像</a>
         </div>
         <hr>
         <div class="form-group">
             <label for="file3">裏ぶた <span class="required">*</span></label>
             <input type="file" id="file3" required>
+            <input type="hidden" id="file3Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line3.png' alt='裏ぶた画像の例' style='width:200px;'>">サンプル画像</a>
         </div>
         <hr>
         <div class="form-group">
             <label for="file4">付属品全体 <span class="required">*</span></label>
             <input type="file" id="file4" required>
+            <input type="hidden" id="file4Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line4.png' alt='付属品画像の例' style='width:200px;'>">サンプル画像</a>
         </div>
         <hr>
         <div class="form-group">
             <label for="file5">修理明細や補足画像</label>
             <input type="file" id="file5">
+            <input type="hidden" id="file5Url">
         </div>
         <hr>
         <div class="form-group">
@@ -181,8 +186,6 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                console.log('LIFF Context:', liff.getContext());
-                console.log('Is Logged In:', liff.isLoggedIn());
             }).catch(err => {
                 console.error('LIFF initialization error:', err);
                 alert('再度開きなおしてください。解決しない場合、直接画像とメッセージを送信してください。');
@@ -208,6 +211,7 @@
                 return tooltip;
             });
         });
+
         function toggleWarrantyFields() {
             const warrantyChecked = document.getElementById('warranty').checked;
             document.getElementById('warrantyDetails').style.display = warrantyChecked ? 'block' : 'none';
