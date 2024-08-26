@@ -115,6 +115,10 @@
     </form>
 
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-    <script src="liff.js"></script>
+    <script>
+        var script = document.createElement('script');
+        script.src = 'liff.js?date=' + new Date().getTime();
+        document.head.appendChild(script);
+    </script>
 </body>
 </html>
