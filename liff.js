@@ -133,7 +133,6 @@ function sendData() {
         liff.closeWindow();
     }).catch((err) => {
         console.error('メッセージ送信エラー:', err);
-        alert(err);
     });
 }
 
