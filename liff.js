@@ -1,16 +1,3 @@
-document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOMContentLoaded event fired.');
-    liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
-        // LIFF初期化成功
-        console.log('LIFF initialized successfully.');
-        alert('初期化成功');
-    }).catch(err => {
-        console.error('LIFF initialization error:', err);
-        alert('LIFF初期化エラー: ' + err);
-    });
-});
-
-
 function toggleWarrantyFields() {
     const warrantyChecked = document.getElementById('warranty').checked;
     document.getElementById('warrantyDetails').style.display = warrantyChecked ? 'block' : 'none';
