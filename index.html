@@ -224,6 +224,7 @@
                 document.getElementById('file3'),
                 document.getElementById('file4'),
             ];
+            console.log('1');
         
             let isValid = true;
             requiredFields.forEach(field => {
@@ -233,6 +234,7 @@
                     return;
                 }
             });
+            console.log('2');
         
             // 保証書がチェックされた場合の年と月のチェック
             if (document.getElementById('warranty').checked) {
@@ -244,6 +246,7 @@
                     return;
                 }
             }
+            console.log('3');
         
             // 他社査定が「あり」の場合の査定金額のチェック
             const assessment = document.querySelector('input[name="otherAssessment"]:checked');
@@ -255,6 +258,7 @@
                     return;
                 }
             }
+            console.log('4');
         
             // チェックボックスのバリデーション
             var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -265,20 +269,22 @@
                 isValid = false;
                 return;
             }
+            console.log('5');
         
             // ラジオボタンのバリデーション
             var radios = document.querySelectorAll('input[name="otherAssessment"]');
             var isRadioChecked = Array.prototype.slice.call(radios).some(x => x.checked);
-        
             if (!isRadioChecked) {
                 alert('他社査定を選択してください。');
                 isValid = false;
                 return;
             }
+            console.log('6');
             
             if (!isValid) {
                 return;
             }
+            console.log('7');
         
             // 送信するメッセージリスト
             let messages = [];
@@ -291,33 +297,46 @@
                 document.getElementById('file3').files[0],
                 document.getElementById('file4').files[0]
             ];
+            console.log('8');
         
             // 画像を非同期で読み込むPromiseを作成
             const fileReadPromises = files.map((file) => {
                 return new Promise((resolve, reject) => {
+                    console.log('9');
                     if (file) {
+                        console.log('10');
                         const reader = new FileReader();
                         reader.onload = function(event) {
+                            console.log('11');
                             resolve({
                                 type: 'image',
                                 originalContentUrl: event.target.result,
                                 previewImageUrl: event.target.result
                             });
                         };
+                        console.log('12');
                         reader.onerror = reject;
+                        console.log('13');
                         reader.readAsDataURL(file);
+                        console.log('14');
                     } else {
+                        console.log('10-err');
                         resolve(null);
                     }
                 });
             });
+            console.log('15');
             // すべての画像の読み込みが完了するのを待つ
             Promise.all(fileReadPromises).then((results) => {
+                console.log('16');
                 results.forEach(result => {
+                    console.log('17');
                     if (result) {
+                        console.log('18');
                         messages.push(result);
                     }
                 });
+                console.log('19');
         
                 // テキストメッセージを追加
                 const textMessage = {
@@ -332,7 +351,9 @@
 参考URL: ${document.getElementById('url').value}\n
 備考: ${document.getElementById('remarks').value}`
                 };
+                console.log('20');
                 messages.push(textMessage);
+                console.log('21');
         
                 // メッセージを送信
                 return liff.sendMessages(messages);
@@ -344,19 +365,24 @@
         }
         
         function getAccessories() {
+            console.log('19-1');
             let accessories = '';
             if (document.getElementById('warranty').checked) {
                 accessories += '保証書 ';
             }
+            console.log('19-2');
             if (document.getElementById('box').checked) {
                 accessories += '箱 ';
             }
+            console.log('19-3');
             if (document.getElementById('others').checked) {
                 accessories += 'その他 ';
             }
+            console.log('19-4');
             if (document.getElementById('noAccessories').checked) {
                 accessories += '付属品なし ';
             }
+            console.log('19-5');
             return accessories.trim();
         }
     </script>
