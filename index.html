@@ -181,6 +181,8 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
+                console.log('LIFF Context:', liff.getContext());
+                console.log('Is Logged In:', liff.isLoggedIn());
             }).catch(err => {
                 console.error('LIFF initialization error:', err);
                 alert('再度開きなおしてください。解決しない場合、直接画像とメッセージを送信してください。');
