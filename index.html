@@ -175,26 +175,13 @@
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var script = document.createElement('script');
-            script.src = 'liff.js?date=' + new Date().getTime();
-            
-            // liff.jsがロードされた後にLIFF初期化を行う
-            script.onload = function() {
-                console.log('liff.js loaded successfully.');
-                liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
-                    // LIFF初期化成功
-                    console.log('LIFF initialized successfully.');
-                }).catch(err => {
-                    console.error('LIFF initialization error:', err);
-                    alert('LIFF初期化エラー: ' + err);
-                });
-            };
-        
-            script.onerror = function() {
-                console.error('Failed to load liff.js.');
-                alert('liff.jsのロードに失敗しました。');
-            };
-            document.head.appendChild(script);
+            liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
+                // LIFF初期化成功
+                console.log('LIFF initialized successfully.');
+            }).catch(err => {
+                console.error('LIFF initialization error:', err);
+                alert('再度開きなおしてください。解決しない場合、直接画像とメッセージを送信してください。');
+            });
 
             // ツールチップを有効化
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('.helpIcon'));
