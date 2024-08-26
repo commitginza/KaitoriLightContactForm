@@ -115,9 +115,9 @@
         <div class="form-group">
             <label>付属品</label>
             <div>
-                <input type="checkbox" id="warranty" onclick="toggleWarrantyFields()"> 保証書
-                <input type="checkbox" id="box"> 箱
-                <input type="checkbox" id="others"> その他
+                <input type="checkbox" id="warranty" onclick="toggleWarrantyFields()"><label for="warranty"> 保証書 </label>
+                <input type="checkbox" id="box"><label for="box"> 箱 </label>
+                <input type="checkbox" id="others"><label for="others"> その他 </label>
             </div>
         </div>
         <div id="warrantyDetails" style="display: none;">
@@ -134,8 +134,8 @@
         <div class="form-group">
             <label>他社査定</label>
             <div>
-                <input type="radio" name="otherAssessment" value="あり" onclick="toggleAssessmentFields()"> あり
-                <input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()"> なし
+                <input type="radio" name="otherAssessment" value="あり" onclick="toggleAssessmentFields()" id="radioAri"><label for="radioAri"> あり</label>
+                <input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi"><label for="radioNashi"> なし</label>
             </div>
         </div>
         <div id="assessmentAmountField" style="display: none;">
