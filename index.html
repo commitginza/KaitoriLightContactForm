@@ -347,7 +347,6 @@
                 // メッセージを送信
                 return liff.sendMessages(messages);
             }).then(() => {
-                alert('送信が完了しました！');
                 liff.closeWindow();
             }).catch((err) => {
                 console.error('メッセージ送信エラー:', err);
