@@ -145,8 +145,8 @@
         <div class="form-group">
             <label>他社査定</label>
             <div>
-                <input type="radio" name="otherAssessment" value="あり" onclick="toggleAssessmentFields()" id="radioAri"><label for="radioAri"> あり</label>
-                <input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi"><label for="radioNashi"> なし</label>
+                <div class="flex"><input type="radio" name="otherAssessment" value="あり" onclick="toggleAssessmentFields()" id="radioAri"><label for="radioAri"> あり</label></div>
+                <div class="flex"><input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi"><label for="radioNashi"> なし</label></div>
             </div>
         </div>
         <div id="assessmentAmountField" style="display: none;">
@@ -160,7 +160,7 @@
             <label for="remarks">備考</label>
             <textarea id="remarks" rows="4" placeholder="その他の情報を入力してください"></textarea>
         </div>
-        <div style="text-align:center;">
+        <div style="text-align:center;margin-bottom: 10%;">
             <button type="button" id="sendButton" onclick="sendData()">送信</button>
         </div>
     </form>
