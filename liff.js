@@ -58,6 +58,26 @@ function sendData() {
         }
     }
 
+    // チェックボックスのバリデーション
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    var isChecked = Array.prototype.slice.call(checkboxes).some(x => x.checked);
+
+    if (!isChecked) {
+        alert('付属品を少なくとも1つ選択してください。');
+        isValid = false;
+        return;
+    }
+
+    // ラジオボタンのバリデーション
+    var radios = document.querySelectorAll('input[name="otherAssessment"]');
+    var isRadioChecked = Array.prototype.slice.call(radios).some(x => x.checked);
+
+    if (!isRadioChecked) {
+        alert('他社査定を選択してください。');
+        isValid = false;
+        return;
+    }
+    
     if (!isValid) {
         return;
     }
