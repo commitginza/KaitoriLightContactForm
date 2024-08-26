@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
         // LIFF初期化成功
+        alert('初期化成功');
     }).catch(err => {
         console.error('LIFF初期化エラー:', err);
     });
@@ -59,6 +60,7 @@ function sendData() {
     if (!isValid) {
         return;
     }
+    alert('必須確認問題なし');
 
     // 送信するメッセージリスト
     let messages = [];
@@ -78,6 +80,7 @@ function sendData() {
         if (file) {
             const reader = new FileReader();
             reader.onload = function(event) {
+                alert('start reader onload');
                 // 画像データをBase64にエンコードし、画像メッセージとして追加
                 messages.push({
                     type: 'image',
@@ -89,6 +92,7 @@ function sendData() {
 
                 // すべてのファイルが処理されたら、テキストメッセージを追加して送信
                 if (processedFiles === files.length) {
+                    alert('processedFiles === files.length');
                     // その他のテキストメッセージを作成
                     const textMessage = {
                         type: 'text',
