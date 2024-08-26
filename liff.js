@@ -24,6 +24,7 @@ function sendData() {
         document.getElementById('file2'),
         document.getElementById('file3'),
         document.getElementById('file4'),
+        document.getElementById('file5'),
     ];
 
     let isValid = true;
@@ -70,9 +71,10 @@ function sendData() {
     const file2 = document.getElementById('file2').files[0];
     const file3 = document.getElementById('file3').files[0];
     const file4 = document.getElementById('file4').files[0];
+    const file5 = document.getElementById('file5').files[0];
 
     // ファイルのリストを配列にして処理
-    const files = [file1, file2, file3, file4];
+    const files = [file1, file2, file3, file4, file5];
 
     let processedFiles = 0;
 
@@ -80,7 +82,7 @@ function sendData() {
         if (file) {
             const reader = new FileReader();
             reader.onload = function(event) {
-                alert('start reader onload');
+                alert('start reader onload' + event.target.result);
                 // 画像データをBase64にエンコードし、画像メッセージとして追加
                 messages.push({
                     type: 'image',
@@ -102,7 +104,10 @@ function sendData() {
 型番: ${document.getElementById('modelNumber').value}\n
 付属品: ${getAccessories()}\n
 他社査定: ${assessment ? assessment.value : 'なし'}\n
-他社査定金額: ${document.getElementById('assessmentAmount').value}`
+他社査定金額: ${document.getElementById('assessmentAmount').value}\n
+参考URL: ${document.getElementById('modelNumber').value}\n
+備考: ${document.getElementById('remarks').value}
+`
                     };
                     messages.push(textMessage);
 
