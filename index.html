@@ -11,6 +11,7 @@
         }
         .form-group {
             margin-bottom: 15px;
+            padding: 2%;
         }
         .form-group label {
             display: block;
@@ -54,7 +55,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div style="background-color: #d5d5d536;border-radius: 22px;padding: 1% 3%;margin-bottom: 10%;">
+    <div style="background-color: #cbcbcb;border-radius: 0 0 22px 22px;padding: 1% 3%;margin-bottom: 10%;">
         <p style="font-weight: bold;">スムーズな高額査定のポイント</p>
         <ul style="padding-left: 25px;font-size: 12px;">
             <li>下記必要事項を入力してもらうことでやりとりを少なくスムーズに査定が可能です。</li>
@@ -64,48 +65,52 @@
         </ul>
     </div>
     <form id="liffForm">
-        <!-- 添付ファイル -->
+        <hr>
         <div class="form-group">
             <label for="file1">正面 <span class="required">*</span></label>
             <input type="file" id="file1" required>
             <a href="#" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line1.png' alt='正面画像の例' style='width:200px;'>">サンプル画像</a>
         </div>
+        <hr>
         <div class="form-group">
             <label for="file2">全体 <span class="required">*</span></label>
             <input type="file" id="file2" required>
             <a href="#" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line2.png' alt='全体画像の例' style='width:200px;'>">サンプル画像</a>
         </div>
+        <hr>
         <div class="form-group">
             <label for="file3">裏ぶた <span class="required">*</span></label>
             <input type="file" id="file3" required>
             <a href="#" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line3.png' alt='裏ぶた画像の例' style='width:200px;'>">サンプル画像</a>
         </div>
+        <hr>
         <div class="form-group">
             <label for="file4">付属品全体 <span class="required">*</span></label>
             <input type="file" id="file4" required>
             <a href="#" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line4.png' alt='付属品画像の例' style='width:200px;'>">サンプル画像</a>
         </div>
+        <hr>
         <div class="form-group">
             <label for="file5">修理明細や補足画像 <span class="required">*</span></label>
             <input type="file" id="file5" required>
             <a href="#" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line5.png' alt='その他付属品' style='width:200px;'>">サンプル画像</a>
         </div>
-
-        <!-- ブランド、モデル、型番 -->
+        <hr>
         <div class="form-group">
             <label for="brand">ブランド</label>
             <input type="text" id="brand">
         </div>
+        <hr>
         <div class="form-group">
             <label for="model">モデル</label>
             <input type="text" id="model">
         </div>
+        <hr>
         <div class="form-group">
             <label for="modelNumber">型番</label>
             <input type="text" id="modelNumber">
         </div>
-
-        <!-- 付属品 -->
+        <hr>
         <div class="form-group">
             <label>付属品</label>
             <div>
@@ -114,6 +119,7 @@
                 <input type="checkbox" id="others"> その他
             </div>
         </div>
+        <hr>
         <div id="warrantyDetails" style="display: none;">
             <div class="form-group">
                 <label for="warrantyYear">保証書年 <span class="required">*</span></label>
@@ -124,8 +130,7 @@
                 <input type="number" id="warrantyMonth" min="1" max="12" placeholder="1 ～ 12" required>
             </div>
         </div>
-
-        <!-- 他社査定 -->
+        <hr>
         <div class="form-group">
             <label>他社査定</label>
             <div>
@@ -133,12 +138,14 @@
                 <input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()"> なし
             </div>
         </div>
+        <hr>
         <div id="assessmentAmountField" style="display: none;">
             <div class="form-group">
                 <label for="assessmentAmount">他社査定金額 <span class="required">*</span></label>
                 <input type="text" id="assessmentAmount">
             </div>
         </div>
+        <hr>
         <div class="form-group">
             <label for="remarks">備考</label>
             <textarea id="remarks" rows="4" placeholder="その他の情報を入力してください"></textarea>
