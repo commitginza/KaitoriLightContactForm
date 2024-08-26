@@ -24,7 +24,6 @@ function sendData() {
         document.getElementById('file2'),
         document.getElementById('file3'),
         document.getElementById('file4'),
-        document.getElementById('file5'),
     ];
 
     let isValid = true;
@@ -81,67 +80,68 @@ function sendData() {
     if (!isValid) {
         return;
     }
-    alert('必須確認問題なし');
 
     // 送信するメッセージリスト
     let messages = [];
-
-    // 添付ファイルの処理
-    const file1 = document.getElementById('file1').files[0];
-    const file2 = document.getElementById('file2').files[0];
-    const file3 = document.getElementById('file3').files[0];
-    const file4 = document.getElementById('file4').files[0];
-    const file5 = document.getElementById('file5').files[0];
-
-    // ファイルのリストを配列にして処理
-    const files = [file1, file2, file3, file4, file5];
-
     let processedFiles = 0;
 
-    files.forEach((file, index) => {
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                alert('start reader onload' + event.target.result);
-                // 画像データをBase64にエンコードし、画像メッセージとして追加
-                messages.push({
-                    type: 'image',
-                    originalContentUrl: event.target.result,
-                    previewImageUrl: event.target.result
-                });
+    // 添付ファイルの処理
+    const files = [
+        document.getElementById('file1').files[0],
+        document.getElementById('file2').files[0],
+        document.getElementById('file3').files[0],
+        document.getElementById('file4').files[0]
+    ];
 
-                processedFiles++;
+    // 画像を非同期で読み込むPromiseを作成
+    const fileReadPromises = files.map((file) => {
+        return new Promise((resolve, reject) => {
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    resolve({
+                        type: 'image',
+                        originalContentUrl: event.target.result,
+                        previewImageUrl: event.target.result
+                    });
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            } else {
+                resolve(null);
+            }
+        });
+    });
+    // すべての画像の読み込みが完了するのを待つ
+    Promise.all(fileReadPromises).then((results) => {
+        results.forEach(result => {
+            if (result) {
+                messages.push(result);
+            }
+        });
 
-                // すべてのファイルが処理されたら、テキストメッセージを追加して送信
-                if (processedFiles === files.length) {
-                    alert('processedFiles === files.length');
-                    // その他のテキストメッセージを作成
-                    const textMessage = {
-                        type: 'text',
-                        text: `
+        // テキストメッセージを追加
+        const textMessage = {
+            type: 'text',
+            text: `
 ブランド: ${document.getElementById('brand').value}\n
 モデル: ${document.getElementById('model').value}\n
 型番: ${document.getElementById('modelNumber').value}\n
 付属品: ${getAccessories()}\n
-他社査定: ${assessment ? assessment.value : 'なし'}\n
+他社査定: ${document.querySelector('input[name="otherAssessment"]:checked') ? document.querySelector('input[name="otherAssessment"]:checked').value : 'なし'}\n
 他社査定金額: ${document.getElementById('assessmentAmount').value}\n
-参考URL: ${document.getElementById('modelNumber').value}\n
-備考: ${document.getElementById('remarks').value}
-`
-                    };
-                    messages.push(textMessage);
+参考URL: ${document.getElementById('url').value}\n
+備考: ${document.getElementById('remarks').value}`
+        };
+        messages.push(textMessage);
 
-                    // メッセージを送信
-                    liff.sendMessages(messages).then(() => {
-                        alert('送信が完了しました！');
-                        liff.closeWindow();
-                    }).catch(err => {
-                        console.error('メッセージ送信エラー:', err);
-                    });
-                }
-            };
-            reader.readAsDataURL(file);  // ファイルをBase64形式で読み込む
-        }
+        // メッセージを送信
+        return liff.sendMessages(messages);
+    }).then(() => {
+        alert('送信が完了しました！');
+        liff.closeWindow();
+    }).catch((err) => {
+        console.error('メッセージ送信エラー:', err);
     });
 }
 
@@ -155,6 +155,9 @@ function getAccessories() {
     }
     if (document.getElementById('others').checked) {
         accessories += 'その他 ';
+    }
+    if (document.getElementById('noAccessories').checked) {
+        accessories += '付属品なし ';
     }
     return accessories.trim();
 }
