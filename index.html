@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIFF Form</title>
+    <title>簡易査定フォーム</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,24 +45,37 @@
     </style>
 </head>
 <body>
-    <h1>情報送信フォーム</h1>
+    <h1>簡易査定フォーム</h1>
+    <div>
+        <p>スムーズな高額査定のポイント</p>
+        <ul>
+            <li>下記必要事項を入力してもらうことでやりとりを少なくスムーズに査定が可能です。</li>
+            <li>なるべく明るい場所でピントを合わせてください。</li>
+            <li>保証書（ギャランティーカード）がある場合は、「型番（リファレンス）」や「商品名」が読み取れるように撮影してください。</li>
+            <li>光の加減で文字盤色が異なる型番となることもあるため読み取れるように撮影してください。</li>
+        </ul>
+    </div>
     <form id="liffForm">
         <!-- 添付ファイル -->
         <div class="form-group">
-            <label for="file1">添付ファイル1 <span class="required">*</span></label>
+            <label for="file1">正面 <span class="required">*</span></label>
             <input type="file" id="file1" required>
         </div>
         <div class="form-group">
-            <label for="file2">添付ファイル2 <span class="required">*</span></label>
+            <label for="file2">全体 <span class="required">*</span></label>
             <input type="file" id="file2" required>
         </div>
         <div class="form-group">
-            <label for="file3">添付ファイル3 <span class="required">*</span></label>
+            <label for="file3">裏ぶた <span class="required">*</span></label>
             <input type="file" id="file3" required>
         </div>
         <div class="form-group">
-            <label for="file4">添付ファイル4 <span class="required">*</span></label>
+            <label for="file4">付属品全体 <span class="required">*</span></label>
             <input type="file" id="file4" required>
+        </div>
+        <div class="form-group">
+            <label for="file5">修理明細や補足画像 <span class="required">*</span></label>
+            <input type="file" id="file5" required>
         </div>
 
         <!-- ブランド、モデル、型番 -->
@@ -113,7 +126,10 @@
                 <input type="text" id="assessmentAmount">
             </div>
         </div>
-
+        <div class="form-group">
+            <label for="remarks">備考</label>
+            <textarea id="remarks" rows="4" placeholder="その他の情報を入力してください"></textarea>
+        </div>
         <button type="button" id="sendButton" onclick="sendData()">送信</button>
     </form>
 
