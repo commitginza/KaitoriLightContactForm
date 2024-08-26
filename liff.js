@@ -60,26 +60,59 @@ function sendData() {
         return;
     }
 
-    // 送信するメッセージの作成
-    const message = `添付ファイル1: ${document.getElementById('file1').value}\n
-                     添付ファイル2: ${document.getElementById('file2').value}\n
-                     添付ファイル3: ${document.getElementById('file3').value}\n
-                     添付ファイル4: ${document.getElementById('file4').value}\n
-                     ブランド: ${document.getElementById('brand').value}\n
-                     モデル: ${document.getElementById('model').value}\n
-                     型番: ${document.getElementById('modelNumber').value}\n
-                     付属品: ${getAccessories()}\n
-                     他社査定: ${assessment ? assessment.value : 'なし'}\n
-                     他社査定金額: ${document.getElementById('assessmentAmount').value}`;
+    // 送信するメッセージリスト
+    let messages = [];
 
-    liff.sendMessages([{
-        type: 'text',
-        text: message
-    }]).then(() => {
-        alert('送信が完了しました！');
-        liff.closeWindow();
-    }).catch(err => {
-        console.error('メッセージ送信エラー:', err);
+    // 添付ファイルの処理
+    const file1 = document.getElementById('file1').files[0];
+    const file2 = document.getElementById('file2').files[0];
+    const file3 = document.getElementById('file3').files[0];
+    const file4 = document.getElementById('file4').files[0];
+
+    // ファイルのリストを配列にして処理
+    const files = [file1, file2, file3, file4];
+
+    let processedFiles = 0;
+
+    files.forEach((file, index) => {
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // 画像データをBase64にエンコードし、画像メッセージとして追加
+                messages.push({
+                    type: 'image',
+                    originalContentUrl: event.target.result,
+                    previewImageUrl: event.target.result
+                });
+
+                processedFiles++;
+
+                // すべてのファイルが処理されたら、テキストメッセージを追加して送信
+                if (processedFiles === files.length) {
+                    // その他のテキストメッセージを作成
+                    const textMessage = {
+                        type: 'text',
+                        text: `
+ブランド: ${document.getElementById('brand').value}\n
+モデル: ${document.getElementById('model').value}\n
+型番: ${document.getElementById('modelNumber').value}\n
+付属品: ${getAccessories()}\n
+他社査定: ${assessment ? assessment.value : 'なし'}\n
+他社査定金額: ${document.getElementById('assessmentAmount').value}`
+                    };
+                    messages.push(textMessage);
+
+                    // メッセージを送信
+                    liff.sendMessages(messages).then(() => {
+                        alert('送信が完了しました！');
+                        liff.closeWindow();
+                    }).catch(err => {
+                        console.error('メッセージ送信エラー:', err);
+                    });
+                }
+            };
+            reader.readAsDataURL(file);  // ファイルをBase64形式で読み込む
+        }
     });
 }
 
