@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // LIFF初期化成功
         alert('初期化成功');
     }).catch(err => {
-        console.error('LIFF初期化エラー:', err);
+        alert('LIFF初期化エラー:', err);
     });
 });
 
