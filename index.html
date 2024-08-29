@@ -204,7 +204,6 @@
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
-                alert(`${userId}`);
 
                 // 各ファイルinputにイベントリスナーを設定
                 ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
@@ -212,10 +211,9 @@
                         const file = event.target.files[0];
                         if (file) {
                             const fileName = `${userId}_${fileId}.${file.name.split('.').pop()}`;
-                            alert(`${fileName}`);
                             uploadToS3(file, fileName).then(s3Url => {
                                 // アップロードされたファイルのURLをhiddenフィールドに設定
-                                alert(`${s3Url}`);
+                                alert(`アップロードされたファイルのURLをhiddenフィールドに設定: ${s3Url}`);
                                 document.getElementById(`${fileId}Url`).value = s3Url;
                             }).catch(err => {
                                 console.error(`ファイルアップロードエラー (${fileId}):`, err);
@@ -260,14 +258,13 @@
                 }).then(response => response.json())
                   .then(data => {
                       if (data.url) {
-                          alert(`data.url: ${data.url}`);
                           resolve(data.url);  // アップロードされたファイルのS3 URL
                       } else {
-                          alert(`ファイルアップロード失敗`);
+                          alert(`ファイルアップロード失敗: ${data}`);
                           reject('ファイルアップロード失敗');
                       }
                   }).catch(err => {
-                      alert(`file upload reject catch. err: ${err}`);
+                      alert(`file upload reject catch. deploy err: ${err}`);
                       reject(err);
                   });
             });
