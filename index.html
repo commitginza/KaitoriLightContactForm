@@ -174,7 +174,7 @@
             <label>他社査定 <span class="required">*</span></label>
             <div>
                 <div class="flex"><input type="radio" name="otherAssessment" value="あり" onclick="toggleAssessmentFields()" id="radioAri"><label for="radioAri"> あり</label></div>
-                <div class="flex"><input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi" checked><label for="radioNashi"> なし</label></div>
+                <div class="flex"><input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi"><label for="radioNashi"> なし</label></div>
             </div>
             <div id="assessmentError" class="error"></div>
             <div id="assessmentAmountField" style="display: none;">
@@ -322,18 +322,26 @@
 
             // 他社査定が「あり」の場合の査定金額のチェック
             const assessment = document.querySelector('input[name="otherAssessment"]:checked');
+            const assessmentError = document.getElementById('assessmentError');
             const assessmentAmountError = document.getElementById('assessmentAmountError');
-            if (assessment && assessment.value === 'あり') {
-                const assessmentAmount = document.getElementById('assessmentAmount').value;
-                if (!assessmentAmount) {
-                    assessmentAmountError.textContent = '他社査定金額を入力してください。';
-                    isValid = false;
+            if (!assessment) {
+                assessmentError.textContent = '他社査定を選択してください。';
+                isValid = false;
+            } else {
+                assessmentError.textContent = '';
+
+                // 他社査定が「あり」の場合の査定金額のチェック
+                if (assessment.value === 'あり') {
+                    const assessmentAmount = document.getElementById('assessmentAmount').value;
+                    if (!assessmentAmount) {
+                        assessmentAmountError.textContent = '他社査定金額を入力してください。';
+                        isValid = false;
+                    } else {
+                        assessmentAmountError.textContent = '';
+                    }
                 } else {
                     assessmentAmountError.textContent = '';
                 }
-            } else if () {
-            } else {
-                assessmentAmountError.textContent = '';
             }
 
             // 付属品のチェックボックスが1つも選択されていない場合
