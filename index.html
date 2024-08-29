@@ -291,7 +291,7 @@
                         alert(`ファイルアップロードエラー: ${err.message}`);
                         reject(err);
                     });
-                };
+                }
                 reader.onerror = error => {
                     alert('File reading error:', error);
                     reject(error);
