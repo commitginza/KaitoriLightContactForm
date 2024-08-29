@@ -65,6 +65,11 @@
             display: flex;
             align-items: center;
         }
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
@@ -87,6 +92,7 @@
             <input type="file" id="file1" accept="image/*" required>
             <input type="hidden" id="file1Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line1.png' alt='正面画像の例' style='width:200px;'>">サンプル画像</a>
+            <div id="file1Error" class="error"></div>
         </div>
         <hr>
         <div class="form-group">
@@ -94,6 +100,7 @@
             <input type="file" id="file2" required>
             <input type="hidden" id="file2Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line2.png' alt='全体画像の例' style='width:200px;'>">サンプル画像</a>
+            <div id="file2Error" class="error"></div>
         </div>
         <hr>
         <div class="form-group">
@@ -101,6 +108,7 @@
             <input type="file" id="file3" required>
             <input type="hidden" id="file3Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line3.png' alt='裏ぶた画像の例' style='width:200px;'>">サンプル画像</a>
+            <div id="file3Error" class="error"></div>
         </div>
         <hr>
         <div class="form-group">
@@ -108,12 +116,14 @@
             <input type="file" id="file4" required>
             <input type="hidden" id="file4Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line4.png' alt='付属品画像の例' style='width:200px;'>">サンプル画像</a>
+            <div id="file4Error" class="error"></div>
         </div>
         <hr>
         <div class="form-group">
             <label for="file5">修理明細や補足画像</label>
             <input type="file" id="file5">
             <input type="hidden" id="file5Url">
+            <div id="file5Error" class="error"></div>
         </div>
         <hr>
         <div class="form-group">
@@ -163,11 +173,11 @@
                 <div class="flex"><input type="radio" name="otherAssessment" value="あり" onclick="toggleAssessmentFields()" id="radioAri"><label for="radioAri"> あり</label></div>
                 <div class="flex"><input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi"><label for="radioNashi"> なし</label></div>
             </div>
-        </div>
-        <div id="assessmentAmountField" style="display: none;">
-            <div class="form-group">
-                <label for="assessmentAmount">他社査定金額 <span class="required">*</span></label>
-                <input type="text" id="assessmentAmount">
+            <div id="assessmentAmountField" style="display: none;">
+                <div class="form-group">
+                    <label for="assessmentAmount">他社査定金額 <span class="required">*</span></label>
+                    <input type="text" id="assessmentAmount">
+                </div>
             </div>
         </div>
         <hr>
@@ -230,16 +240,6 @@
             });
         });
 
-        function toggleWarrantyFields() {
-            const warrantyChecked = document.getElementById('warranty').checked;
-            document.getElementById('warrantyDetails').style.display = warrantyChecked ? 'block' : 'none';
-        }
-        
-        function toggleAssessmentFields() {
-            const assessment = document.querySelector('input[name="otherAssessment"]:checked').value;
-            document.getElementById('assessmentAmountField').style.display = assessment === 'あり' ? 'block' : 'none';
-        }
-        
         function uploadToS3(file, fileName) {
             return new Promise((resolve, reject) => {
                 const formData = new FormData();
@@ -277,7 +277,58 @@
             });
         }
 
+        function validateForm() {
+            let isValid = true;
+
+            // 必須項目のチェック
+            ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
+                const fileInput = document.getElementById(fileId);
+                const errorElement = document.getElementById(`${fileId}Error`);
+
+                if (!fileInput.value) {
+                    errorElement.textContent = 'このフィールドは必須です。';
+                    isValid = false;
+                } else {
+                    errorElement.textContent = '';
+                }
+            });
+
+            // 保証書がチェックされた場合の年と月のチェック
+            if (document.getElementById('warranty').checked) {
+                const warrantyYear = document.getElementById('warrantyYear').value;
+                const warrantyMonth = document.getElementById('warrantyMonth').value;
+
+                if (!warrantyYear || !warrantyMonth) {
+                    alert('保証書年と月を入力してください');
+                    isValid = false;
+                }
+            }
+
+            // 他社査定が「あり」の場合の査定金額のチェック
+            const assessment = document.querySelector('input[name="otherAssessment"]:checked');
+            if (assessment && assessment.value === 'あり') {
+                const assessmentAmount = document.getElementById('assessmentAmount').value;
+                if (!assessmentAmount) {
+                    alert('他社査定金額を入力してください');
+                    isValid = false;
+                }
+            }
+
+            // 付属品のチェックボックスが1つも選択されていない場合
+            const isChecked = ['warranty', 'box', 'others', 'noAccessories'].some(id => document.getElementById(id).checked);
+            if (!isChecked) {
+                alert('付属品を少なくとも1つ選択してください。');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
         function sendData() {
+            if (!validateForm()) {
+                return;
+            }
+
             const urls = [];
 
             ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
@@ -321,6 +372,16 @@
             });
         }
 
+        function toggleWarrantyFields() {
+            const warrantyChecked = document.getElementById('warranty').checked;
+            document.getElementById('warrantyDetails').style.display = warrantyChecked ? 'block' : 'none';
+        }
+        
+        function toggleAssessmentFields() {
+            const assessment = document.querySelector('input[name="otherAssessment"]:checked').value;
+            document.getElementById('assessmentAmountField').style.display = assessment === 'あり' ? 'block' : 'none';
+        }
+        
         function getAccessories() {
             let accessories = '';
             if (document.getElementById('warranty').checked) {
