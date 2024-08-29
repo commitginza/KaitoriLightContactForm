@@ -248,30 +248,54 @@
 
         function uploadToS3(file, fileName) {
             return new Promise((resolve, reject) => {
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('fileName', fileName);
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    const base64Data = reader.result.split(',')[1];
+                    const base64Size = (base64Data.length * (3/4)) - ((base64Data.indexOf('=') > 0 ? (base64Data.length - base64Data.indexOf('=')) : 0);
+                    // 10MBをバイト変換
+                    const maxSize = 10 * 1024 * 1024;
+                    if (base64Size > maxSize) {
+                        alert('10MB未満の画像を選択してください。');
+                        reject('File size exceeds 10MB.');
+                        return;
+                    }
 
-                fetch('https://d60a2nlem7.execute-api.ap-northeast-1.amazonaws.com/prod/upload', {
-                    method: 'POST',
-                    body: formData
-                }).then(response => {
-                  // ステータスコードの確認
-                  if (!response.ok) {
-                      alert(`HTTP error! status: ${response.status}`);
-                      throw new Error(`HTTP error! status: ${response.status}`);
-                  }
-                  return response.json();
-                }).then(response => response.json())
-                  .then(data => {
+                    const payload = JSON.stringify({
+                        file: base64Data,
+                        fileName: fileName
+                    });
+
+                    fetch('https://d60a2nlem7.execute-api.ap-northeast-1.amazonaws.com/prod/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: payload
+                    }).then(response => {
+                      // ステータスコードの確認
+                      if (!response.ok) {
+                          alert(`HTTP error! status: ${response.status}`);
+                          throw new Error(`HTTP error! status: ${response.status}`);
+                      }
+                      return response.json();
+                    }).then(data => {
                       if (data.url) {
                           resolve(data.url);  // アップロードされたファイルのS3 URL
                       } else {
+                          alert(`ファイルアップロード失敗: ${data}`);
                           reject('ファイルアップロード失敗');
                       }
-                }).catch(err => {
-                  reject(err);
-                });
+                    }).catch(err => {
+                        alert(`ファイルアップロードエラー: ${err.message}`);
+                        reject(err);
+                    });
+                };
+                reader.onerror = error => {
+                    alert('File reading error:', error);
+                    reject(error);
+                }
+
             });
         }
 
