@@ -174,7 +174,7 @@
             <label>他社査定 <span class="required">*</span></label>
             <div>
                 <div class="flex"><input type="radio" name="otherAssessment" value="あり" onclick="toggleAssessmentFields()" id="radioAri"><label for="radioAri"> あり</label></div>
-                <div class="flex"><input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi"><label for="radioNashi"> なし</label></div>
+                <div class="flex"><input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi" checked><label for="radioNashi"> なし</label></div>
             </div>
             <div id="assessmentError" class="error"></div>
             <div id="assessmentAmountField" style="display: none;">
@@ -331,6 +331,7 @@
                 } else {
                     assessmentAmountError.textContent = '';
                 }
+            } else if () {
             } else {
                 assessmentAmountError.textContent = '';
             }
