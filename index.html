@@ -186,9 +186,27 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
+                return liff.getProfile();
+            }).then(profile => {
+                const userId = profile.userId;
+
+                // 各ファイルinputにイベントリスナーを設定
+                ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
+                    document.getElementById(fileId).addEventListener('change', function(event) {
+                        const file = event.target.files[0];
+                        if (file) {
+                            const fileName = `${userId}_${fileId}.${file.name.split('.').pop()}`;
+                            uploadToS3(file, fileName).then(s3Url => {
+                                // アップロードされたファイルのURLをhiddenフィールドに設定
+                                document.getElementById(`${fileId}Url`).value = s3Url;
+                            }).catch(err => {
+                                console.error(`ファイルアップロードエラー (${fileId}):`, err);
+                            });
+                        }
+                    });
+                });
             }).catch(err => {
-                console.error('LIFF initialization error:', err);
-                alert('再度開きなおしてください。解決しない場合、直接画像とメッセージを送信してください。');
+                console.error('LIFF初期化エラーまたはユーザーID取得エラー:', err);
             });
 
             // ツールチップを有効化
@@ -222,132 +240,57 @@
             document.getElementById('assessmentAmountField').style.display = assessment === 'あり' ? 'block' : 'none';
         }
         
+        function uploadToS3(file, fileName) {
+            return new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('fileName', fileName);
+
+                fetch('https://d60a2nlem7.execute-api.ap-northeast-1.amazonaws.com/prod/upload', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.url) {
+                          resolve(data.url);  // アップロードされたファイルのS3 URL
+                      } else {
+                          reject('ファイルアップロード失敗');
+                      }
+                  }).catch(err => {
+                      reject(err);
+                  });
+            });
+        }
+
+        function deleteUploadedFiles(urls) {
+            return fetch('https://d60a2nlem7.execute-api.ap-northeast-1.amazonaws.com/prod/delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ urls: urls })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('ファイル削除失敗');
+                }
+                return response.json();
+            });
+        }
+
         function sendData() {
-            // 必須項目のチェック
-            const requiredFields = [
-                document.getElementById('file1'),
-                document.getElementById('file2'),
-                document.getElementById('file3'),
-                document.getElementById('file4'),
-            ];
-            console.log('1');
-        
-            let isValid = true;
-            requiredFields.forEach(field => {
-                if (!field.value) {
-                    alert('必須項目を入力してください');
-                    isValid = false;
-                    return;
+            const urls = [];
+
+            ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
+                const fileUrl = document.getElementById(`${fileId}Url`).value;
+                if (fileUrl) {
+                    urls.push(fileUrl);
                 }
             });
-            console.log('2');
-        
-            // 保証書がチェックされた場合の年と月のチェック
-            if (document.getElementById('warranty').checked) {
-                const warrantyYear = document.getElementById('warrantyYear').value;
-                const warrantyMonth = document.getElementById('warrantyMonth').value;
-                if (!warrantyYear || !warrantyMonth) {
-                    alert('保証書年と月を入力してください');
-                    isValid = false;
-                    return;
-                }
-            }
-            console.log('3');
-        
-            // 他社査定が「あり」の場合の査定金額のチェック
-            const assessment = document.querySelector('input[name="otherAssessment"]:checked');
-            if (assessment && assessment.value === 'あり') {
-                const assessmentAmount = document.getElementById('assessmentAmount').value;
-                if (!assessmentAmount) {
-                    alert('他社査定金額を入力してください');
-                    isValid = false;
-                    return;
-                }
-            }
-            console.log('4');
-        
-            // チェックボックスのバリデーション
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            var isChecked = Array.prototype.slice.call(checkboxes).some(x => x.checked);
-        
-            if (!isChecked) {
-                alert('付属品を少なくとも1つ選択してください。');
-                isValid = false;
-                return;
-            }
-            console.log('5');
-        
-            // ラジオボタンのバリデーション
-            var radios = document.querySelectorAll('input[name="otherAssessment"]');
-            var isRadioChecked = Array.prototype.slice.call(radios).some(x => x.checked);
-            if (!isRadioChecked) {
-                alert('他社査定を選択してください。');
-                isValid = false;
-                return;
-            }
-            console.log('6');
-            
-            if (!isValid) {
-                return;
-            }
-            console.log('7');
-        
-            // 送信するメッセージリスト
-            let messages = [];
-            let processedFiles = 0;
-        
-            // 添付ファイルの処理
-            const files = [
-                document.getElementById('file1').files[0],
-                document.getElementById('file2').files[0],
-                document.getElementById('file3').files[0],
-                document.getElementById('file4').files[0]
-            ];
-            console.log('8');
-        
-            // 画像を非同期で読み込むPromiseを作成
-            const fileReadPromises = files.map((file) => {
-                return new Promise((resolve, reject) => {
-                    console.log('9');
-                    if (file) {
-                        console.log('10');
-                        const reader = new FileReader();
-                        reader.onload = function(event) {
-                            console.log('11');
-                            resolve({
-                                type: 'image',
-                                originalContentUrl: event.target.result,
-                                previewImageUrl: event.target.result
-                            });
-                        };
-                        console.log('12');
-                        reader.onerror = reject;
-                        console.log('13');
-                        reader.readAsDataURL(file);
-                        console.log('14');
-                    } else {
-                        console.log('10-err');
-                        resolve(null);
-                    }
-                });
-            });
-            console.log('15');
-            // すべての画像の読み込みが完了するのを待つ
-            Promise.all(fileReadPromises).then((results) => {
-                console.log('16');
-                results.forEach(result => {
-                    console.log('17');
-                    if (result) {
-                        console.log('18');
-                        messages.push(result);
-                    }
-                });
-                console.log('19');
-        
-                // テキストメッセージを追加
-                const textMessage = {
-                    type: 'text',
-                    text: `
+
+            // テキストメッセージの作成
+            const textMessage = {
+                type: 'text',
+                text: `
 ブランド: ${document.getElementById('brand').value}\n
 モデル: ${document.getElementById('model').value}\n
 型番: ${document.getElementById('modelNumber').value}\n
@@ -356,39 +299,42 @@
 他社査定金額: ${document.getElementById('assessmentAmount').value}\n
 参考URL: ${document.getElementById('url').value}\n
 備考: ${document.getElementById('remarks').value}`
-                };
-                console.log('20');
-                messages.push(textMessage);
-                console.log('21');
-        
-                // メッセージを送信
-                return liff.sendMessages(messages);
+            };
+
+            const imageMessages = urls.map(url => ({
+                type: 'image',
+                originalContentUrl: url,
+                previewImageUrl: url
+            }));
+
+            const messages = [...imageMessages, textMessage];
+
+            // メッセージ送信
+            liff.sendMessages(messages).then(() => {
+                // メッセージ送信完了後、ファイルを削除
+                return deleteUploadedFiles(urls);
             }).then(() => {
+                alert('メッセージ送信完了およびファイル削除完了');
                 liff.closeWindow();
-            }).catch((err) => {
-                console.error('メッセージ送信エラー:', err);
+            }).catch(err => {
+                console.error('エラー:', err);
             });
         }
-        
+
         function getAccessories() {
-            console.log('19-1');
             let accessories = '';
             if (document.getElementById('warranty').checked) {
                 accessories += '保証書 ';
             }
-            console.log('19-2');
             if (document.getElementById('box').checked) {
                 accessories += '箱 ';
             }
-            console.log('19-3');
             if (document.getElementById('others').checked) {
                 accessories += 'その他 ';
             }
-            console.log('19-4');
             if (document.getElementById('noAccessories').checked) {
                 accessories += '付属品なし ';
             }
-            console.log('19-5');
             return accessories.trim();
         }
     </script>
