@@ -252,7 +252,7 @@
                 reader.readAsDataURL(file);
                 reader.onload = () => {
                     const base64Data = reader.result.split(',')[1];
-                    const base64Size = (base64Data.length * (3/4)) - ((base64Data.indexOf('=') > 0 ? (base64Data.length - base64Data.indexOf('=')) : 0);
+                    const base64Size = (base64Data.length * (3/4)) - ((base64Data.indexOf('=') > 0) ? (base64Data.length - base64Data.indexOf('=')) : 0);
                     // 10MBをバイト変換
                     const maxSize = 10 * 1024 * 1024;
                     if (base64Size > maxSize) {
