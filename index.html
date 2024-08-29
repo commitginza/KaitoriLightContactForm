@@ -154,16 +154,19 @@
                 <div class="flex"><input type="checkbox" id="others"><label for="others"> その他 </label></div>
                 <div class="flex"><input type="checkbox" id="noAccessories"><label for="noAccessories"> 付属品なし </label></div>
             </div>
+            <div id="accessoriesError" class="error"></div>
         </div>
         <div id="warrantyDetails" style="display: none;">
             <p style="font-size:12px;color:brown;padding:2%;">保証書日付を入力していただくとよりスムーズかつより確度の高い査定ができます。</p>
             <div class="form-group">
                 <label for="warrantyYear">保証書年 <span class="required">*</span></label>
                 <input type="tel" id="warrantyYear" pattern="\d{4}" maxlength="4" placeholder="例: 2024">
+                <div id="warrantyYearError" class="error"></div>
             </div>
             <div class="form-group">
                 <label for="warrantyMonth">保証書月 <span class="required">*</span></label>
                 <input type="number" id="warrantyMonth" min="1" max="12" placeholder="1 ～ 12">
+                <div id="warrantyMonthError" class="error"></div>
             </div>
         </div>
         <hr>
@@ -173,10 +176,12 @@
                 <div class="flex"><input type="radio" name="otherAssessment" value="あり" onclick="toggleAssessmentFields()" id="radioAri"><label for="radioAri"> あり</label></div>
                 <div class="flex"><input type="radio" name="otherAssessment" value="なし" onclick="toggleAssessmentFields()" id="radioNashi"><label for="radioNashi"> なし</label></div>
             </div>
+            <div id="assessmentError" class="error"></div>
             <div id="assessmentAmountField" style="display: none;">
                 <div class="form-group">
                     <label for="assessmentAmount">他社査定金額 <span class="required">*</span></label>
                     <input type="text" id="assessmentAmount">
+                    <div id="assessmentAmountError" class="error"></div>
                 </div>
             </div>
         </div>
@@ -296,29 +301,48 @@
             // 保証書がチェックされた場合の年と月のチェック
             if (document.getElementById('warranty').checked) {
                 const warrantyYear = document.getElementById('warrantyYear').value;
+                const warrantyYearError = document.getElementById('warrantyYearError');
                 const warrantyMonth = document.getElementById('warrantyMonth').value;
+                const warrantyMonthError = document.getElementById('warrantyMonthError');
 
-                if (!warrantyYear || !warrantyMonth) {
-                    alert('保証書年と月を入力してください');
+                if (!warrantyYear) {
+                    warrantyYearError.textContent = '保証書年を入力してください。';
                     isValid = false;
+                } else {
+                    warrantyYearError.textContent = '';
+                }
+
+                if (!warrantyMonth) {
+                    warrantyMonthError.textContent = '保証書月を入力してください。';
+                    isValid = false;
+                } else {
+                    warrantyMonthError.textContent = '';
                 }
             }
 
             // 他社査定が「あり」の場合の査定金額のチェック
             const assessment = document.querySelector('input[name="otherAssessment"]:checked');
+            const assessmentAmountError = document.getElementById('assessmentAmountError');
             if (assessment && assessment.value === 'あり') {
                 const assessmentAmount = document.getElementById('assessmentAmount').value;
                 if (!assessmentAmount) {
-                    alert('他社査定金額を入力してください');
+                    assessmentAmountError.textContent = '他社査定金額を入力してください。';
                     isValid = false;
+                } else {
+                    assessmentAmountError.textContent = '';
                 }
+            } else {
+                assessmentAmountError.textContent = '';
             }
 
             // 付属品のチェックボックスが1つも選択されていない場合
             const isChecked = ['warranty', 'box', 'others', 'noAccessories'].some(id => document.getElementById(id).checked);
+            const accessoriesError = document.getElementById('accessoriesError');
             if (!isChecked) {
-                alert('付属品を少なくとも1つ選択してください。');
+                accessoriesError.textContent = '付属品を少なくとも1つ選択してください。';
                 isValid = false;
+            } else {
+                accessoriesError.textContent = '';
             }
 
             return isValid;
