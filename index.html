@@ -204,7 +204,6 @@
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
-                alert('welcome');
 
                 // 各ファイルinputにイベントリスナーを設定
                 ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
@@ -268,11 +267,9 @@
                       if (data.url) {
                           resolve(data.url);  // アップロードされたファイルのS3 URL
                       } else {
-                          alert(`ファイルアップロード失敗: ${data.error}`);
                           reject('ファイルアップロード失敗');
                       }
                 }).catch(err => {
-                  alert(`file upload reject catch. deploy err: ${err.message}`);
                   reject(err);
                 });
             });
