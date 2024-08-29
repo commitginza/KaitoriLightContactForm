@@ -211,8 +211,10 @@
                         const file = event.target.files[0];
                         if (file) {
                             const fileName = `${userId}_${fileId}.${file.name.split('.').pop()}`;
+                            alert(`${fileName}`);
                             uploadToS3(file, fileName).then(s3Url => {
                                 // アップロードされたファイルのURLをhiddenフィールドに設定
+                                alert(`${s3Url}`);
                                 document.getElementById(`${fileId}Url`).value = s3Url;
                             }).catch(err => {
                                 console.error(`ファイルアップロードエラー (${fileId}):`, err);
@@ -257,11 +259,14 @@
                 }).then(response => response.json())
                   .then(data => {
                       if (data.url) {
+                          alert(`data.url: ${data.url}`);
                           resolve(data.url);  // アップロードされたファイルのS3 URL
                       } else {
+                          alert(`ファイルアップロード失敗`);
                           reject('ファイルアップロード失敗');
                       }
                   }).catch(err => {
+                      alert(`file upload reject catch.`);
                       reject(err);
                   });
             });
