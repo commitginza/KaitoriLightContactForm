@@ -267,7 +267,7 @@
                           reject('ファイルアップロード失敗');
                       }
                   }).catch(err => {
-                      alert(`file upload reject catch.`);
+                      alert(`file upload reject catch. err: ${err}`);
                       reject(err);
                   });
             });
