@@ -202,7 +202,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('5');
+                alert('6');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -444,7 +444,7 @@
             // テキストメッセージの作成
             const textMessage = {
                 type: 'text',
-                text: `ブランド:\n　${brand}\nモデル:\n　${model}\n型番:\n　${modelNumber}\n付属品:\n　${accessories}${warrantyDate ? `\n保証書日付:\n ${warrantyDate}` : ''}\n他社査定:\n　${otherAssessmentChecked ? otherAssessmentChecked.value : 'なし'}${otherAssessmentChecked && otherAssessmentChecked.value === 'あり' ? `\n他社査定金額: ${formattedAssessmentAmount}` : ''}\n参考URL:\n${referenceUrl}\n備考:\n${remarks}`
+                text: `ブランド:\n　${brand}\nモデル:\n　${model}\n型番:\n　${modelNumber}\n付属品:\n　${accessories}${warrantyDate ? `\n保証書日付:\n ${warrantyDate}` : ''}\n他社査定:\n　${otherAssessmentChecked ? otherAssessmentChecked.value : 'なし'}${otherAssessmentChecked && otherAssessmentChecked.value === 'あり' ? `\n他社査定金額:\n ${formattedAssessmentAmount}` : ''}\n参考URL:\n${referenceUrl}\n備考:\n${remarks}`
             };
             // カルーセルメッセージの作成
             const carouselMessage = {
