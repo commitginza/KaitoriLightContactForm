@@ -213,9 +213,9 @@
                             const fileName = `${userId}_${fileId}.${file.name.split('.').pop()}`;
                             uploadToS3(file, fileName).then(s3Url => {
                                 // アップロードされたファイルのURLをhiddenフィールドに設定
-                                alert(`アップロードされたファイルのURLをhiddenフィールドに設定: ${s3Url}`);
                                 document.getElementById(`${fileId}Url`).value = s3Url;
                             }).catch(err => {
+                                alert(`申し訳ありません。ファイルアップロードに失敗したため、再選択をお願いします。`);
                                 console.error(`ファイルアップロードエラー (${fileId}):`, err);
                             });
                         }
@@ -275,7 +275,6 @@
                     }).then(response => {
                       // ステータスコードの確認
                       if (!response.ok) {
-                          alert(`HTTP error! status: ${response.status}`);
                           throw new Error(`HTTP error! status: ${response.status}`);
                       }
                       return response.json();
@@ -283,16 +282,13 @@
                       if (data.url) {
                           resolve(data.url);  // アップロードされたファイルのS3 URL
                       } else {
-                          alert(`ファイルアップロード失敗: ${data}`);
                           reject('ファイルアップロード失敗');
                       }
                     }).catch(err => {
-                        alert(`ファイルアップロードエラー: ${err.message}`);
                         reject(err);
                     });
                 }
                 reader.onerror = error => {
-                    alert('File reading error:', error);
                     reject(error);
                 }
 
