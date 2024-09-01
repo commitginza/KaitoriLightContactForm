@@ -210,7 +210,17 @@
                     document.getElementById(fileId).addEventListener('change', function(event) {
                         const file = event.target.files[0];
                         if (file) {
-                            let fileExtension = file.name.split('.').pop(); // 正しい拡張子を取得
+                            const fileType = file.type; // MIMEタイプを取得
+                            let fileExtension = '';
+                    
+                            if (fileType === 'image/jpeg' || fileType === 'image/jpg') {
+                                fileExtension = 'jpg';
+                            } else if (fileType === 'image/png') {
+                                fileExtension = 'png';
+                            } else {
+                                alert('サポートされていない画像形式です。JPEG,JPGまたはPNGを使用してください。');
+                                return;
+                            }
                             let fileName = `${userId}_${fileId}.${fileExtension}`;
                             uploadToS3(file, fileName).then(s3Url => {
                                 // アップロードされたファイルのURLをhiddenフィールドに設定
@@ -411,21 +421,21 @@
             const textMessage = {
                 type: 'text',
                 text: `ブランド:
-　${document.getElementById('brand').value}\n
+　${document.getElementById('brand').value}
 モデル:
-　${document.getElementById('model').value}\n
+　${document.getElementById('model').value}
 型番:
-　${document.getElementById('modelNumber').value}\n
+　${document.getElementById('modelNumber').value}
 付属品:
-　${getAccessories()}\n
+　${getAccessories()}
 他社査定:
-　${document.querySelector('input[name="otherAssessment"]:checked') ? document.querySelector('input[name="otherAssessment"]:checked').value : 'なし'}\n
+　${document.querySelector('input[name="otherAssessment"]:checked') ? document.querySelector('input[name="otherAssessment"]:checked').value : 'なし'}
 他社査定金額:
-　${document.getElementById('assessmentAmount').value}\n
+　${document.getElementById('assessmentAmount').value}
 参考URL:
-　${document.getElementById('url').value}\n
+${document.getElementById('url').value}
 備考:
-　${document.getElementById('remarks').value}`
+${document.getElementById('remarks').value}`
             };
 
             // カルーセルメッセージの作成
