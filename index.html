@@ -434,6 +434,7 @@
             let otherAssessmentChecked = document.querySelector('input[name="otherAssessment"]:checked');
             let assessmentAmount = document.getElementById('assessmentAmount').value;
             let formattedAssessmentAmount = assessmentAmount ? `${formatNumberWithCommas(assessmentAmount)}円` : '';
+            alert(`${formattedAssessmentAmount}`);
             let referenceUrl = document.getElementById('url').value;
             let remarks = document.getElementById('remarks').value;
         
