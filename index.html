@@ -468,8 +468,8 @@ ${document.getElementById('remarks').value}`
 
             // メッセージ送信
             liff.sendMessages(messages).then(() => {
-                // メッセージ送信完了後、ファイルを削除
-                return deleteUploadedFiles(urls);
+                // メッセージ送信完了後、ファイルを削除すると画像がみれないためやめた
+                //return deleteUploadedFiles(urls);
             }).then(() => {
                 liff.closeWindow();
             }).catch(err => {
