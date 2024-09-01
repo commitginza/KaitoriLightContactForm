@@ -86,6 +86,7 @@
         </ul>
     </div>
     <form id="liffForm">
+        <input type="hidden" id="lineUID">
         <hr>
         <div class="form-group">
             <label for="file1">正面 <span class="required">*</span></label>
@@ -204,6 +205,7 @@
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
+                document.getElementById(`lineUID`).value = userId;
 
                 // 各ファイルinputにイベントリスナーを設定
                 ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
@@ -400,7 +402,16 @@
             if (!validateForm()) {
                 return;
             }
-
+            const officialAccountUserIds = ['U6609815c4d81aa957fcaf04700642ad0'];
+            let lineUID = document.getElementById(`lineUID`).value;
+            let isOfficialAccountUser = false;
+            if (officialAccountUserIds.includes(lineUID)) {
+                // 公式アカウントのユーザーのため、URLを表示する処理を行う
+                isOfficialAccountUser = true;
+            } else {
+                // 一般ユーザーのため、URLを表示しない処理を行う
+                isOfficialAccountUser = false;
+            }
             const urls = [];
             const labels = {
                 'file1': '正面画像',
@@ -455,9 +466,10 @@ ${document.getElementById('remarks').value}`
                         text: item.text,
                         actions: [
                             {
-                                type: 'uri',
-                                label: item.label,
-                                uri: item.url
+                                type: isOfficialAccountUser ? 'uri' : 'message',
+                                label: isOfficialAccountUser ? `${item.label}を見る` : `${item.label}を確認しました`,
+                                uri: isOfficialAccountUser ? item.url : undefined,
+                                text: !isOfficialAccountUser ? `${item.text}を確認しました` : undefined
                             }
                         ]
                     }))
