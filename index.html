@@ -202,7 +202,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('2');
+                alert('3');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -403,16 +403,6 @@
             if (!validateForm()) {
                 return;
             }
-            const officialAccountUserIds = ['U6609815c4d81aa957fcaf04700642ad0'];
-            let lineUID = document.getElementById(`lineUID`).value;
-            let isOfficialAccountUser = false;
-            if (officialAccountUserIds.includes(lineUID)) {
-                // 公式アカウントのユーザーのため、URLを表示する処理を行う
-                isOfficialAccountUser = true;
-            } else {
-                // 一般ユーザーのため、URLを表示しない処理を行う
-                isOfficialAccountUser = false;
-            }
             const urls = [];
             const labels = {
                 'file1': '正面画像',
@@ -459,18 +449,14 @@ ${document.getElementById('remarks').value}`
                 type: 'template',
                 altText: '画像カルーセル',
                 template: {
-                    type: 'carousel',
+                    type: 'image_carousel',
                     columns: urls.slice(0, 5).map(item => ({
-                        thumbnailImageUrl: item.url,
-                        title: '査定画像',
-                        text: item.label,
-                        actions: [
-                            {
-                                type: isOfficialAccountUser ? 'uri' : 'message',
-                                label: isOfficialAccountUser ? `${item.label}を見る` : `${item.label}を確認しました`,
-                                uri: isOfficialAccountUser ? item.url : undefined
-                            }
-                        ]
+                        imageUrl: item.url || '',  // 画像URL
+                        action: {
+                            type: 'message',
+                            label: `${item.label}`,
+                            text: `${item.label}`
+                        }
                     }))
                 }
             };
