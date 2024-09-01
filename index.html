@@ -434,7 +434,7 @@
                 previewImageUrl: url
             }));
 
-            const messages = [textMessage, ...imageMessages];
+            const messages = [...imageMessages, textMessage];
 
             // メッセージ送信
             liff.sendMessages(messages).then(() => {
