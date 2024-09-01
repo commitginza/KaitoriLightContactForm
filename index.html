@@ -202,7 +202,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('12');
+                alert('13');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -397,6 +397,7 @@
             };
             ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
                 const fileUrl = document.getElementById(`${fileId}Url`).value;
+                alert(`${fileId} :\n${fileUrl}`);
                 if (fileUrl) {
                     urls.push({
                         url: fileUrl,
