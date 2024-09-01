@@ -231,26 +231,6 @@
             }).catch(err => {
                 console.error('LIFF初期化エラーまたはユーザーID取得エラー:', err);
             });
-
-            // ツールチップを有効化
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('.helpIcon'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                var tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
-        
-                // トグル機能の実装
-                tooltipTriggerEl.addEventListener('click', function (e) {
-                    e.preventDefault();  // ページ遷移を防ぐ
-                    if (tooltip._element.getAttribute('aria-describedby')) {
-                        // ツールチップが表示されている場合、非表示にする
-                        tooltip.hide();
-                    } else {
-                        // ツールチップが非表示の場合、表示する
-                        tooltip.show();
-                    }
-                });
-        
-                return tooltip;
-            });
         });
 
         function uploadToS3(file, fileName, retryCount = 0) {
@@ -424,9 +404,9 @@
                     });
                 }
             });
-            let brand = document.getElementById('brand').value;
-            let model = document.getElementById('model').value;
-            let modelNumber = document.getElementById('modelNumber').value;
+            let brand = document.getElementById('brand').value ? document.getElementById('brand').value : '';
+            let model = document.getElementById('model').value ? document.getElementById('model').value : '';
+            let modelNumber = document.getElementById('modelNumber').value ? document.getElementById('modelNumber').value : '';
             let accessories = getAccessories();
             let warrantyChecked = document.getElementById('warranty').checked;
             let warrantyYear = document.getElementById('warrantyYear').value;
@@ -434,18 +414,41 @@
             let otherAssessmentChecked = document.querySelector('input[name="otherAssessment"]:checked');
             let assessmentAmount = document.getElementById('assessmentAmount').value;
             let formattedAssessmentAmount = assessmentAmount ? `${formatNumberWithCommas(assessmentAmount)}円` : '';
-            alert(`${formattedAssessmentAmount}`);
-            let referenceUrl = document.getElementById('url').value;
-            let remarks = document.getElementById('remarks').value;
+            let referenceUrl = document.getElementById('url').value ? document.getElementById('url').value : '';
+            let remarks = document.getElementById('remarks').value ? document.getElementById('remarks').value : '';
         
             let warrantyDate = '';
             if (warrantyChecked && warrantyYear && warrantyMonth) {
                 warrantyDate = `${warrantyYear}年${warrantyMonth}月`;
             }
             // テキストメッセージの作成
+            let strMsg = ``;
+            if (brand != '') {
+                strMsg = `ブランド:\n　${brand}\n`;
+            }
+            if (model != '') {
+                strMsg += `モデル:\n　${model}\n`;
+            }
+            if (modelNumber != '') {
+                strMsg += `型番:\n　${modelNumber}\n`;
+            }
+            strMsg += `付属品:\n　${accessories}\n`;
+            if (warrantyDate != '') {
+                strMsg += `保証書日付:\n　${warrantyDate}\n`;
+            }
+            strMsg += `他社査定:\n　${otherAssessmentChecked ? otherAssessmentChecked.value : 'なし'}`;
+            if (otherAssessmentChecked && otherAssessmentChecked.value === 'あり') {
+                strMsg += `他社査定金額:\n ${formattedAssessmentAmount}\n`;
+            }
+            if (referenceUrl != '') {
+                strMsg += `参考URL:\n ${referenceUrl}\n`;
+            }
+            if (remarks != '') {
+                strMsg += `備考:\n ${remarks}`;
+            }
             const textMessage = {
                 type: 'text',
-                text: `ブランド:\n　${brand}\nモデル:\n　${model}\n型番:\n　${modelNumber}\n付属品:\n　${accessories}${warrantyDate ? `\n保証書日付:\n ${warrantyDate}` : ''}\n他社査定:\n　${otherAssessmentChecked ? otherAssessmentChecked.value : 'なし'}${otherAssessmentChecked && otherAssessmentChecked.value === 'あり' ? `\n他社査定金額:\n ${formattedAssessmentAmount}` : ''}\n参考URL:\n${referenceUrl}\n備考:\n${remarks}`
+                text: strMsg
             };
             // カルーセルメッセージの作成
             const carouselMessage = {
@@ -477,6 +480,26 @@
                 console.error('エラー:', err);
             });
         }
+
+        // ツールチップを有効化
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('.helpIcon'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            var tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
+    
+            // トグル機能の実装
+            tooltipTriggerEl.addEventListener('click', function (e) {
+                e.preventDefault();  // ページ遷移を防ぐ
+                if (tooltip._element.getAttribute('aria-describedby')) {
+                    // ツールチップが表示されている場合、非表示にする
+                    tooltip.hide();
+                } else {
+                    // ツールチップが非表示の場合、表示する
+                    tooltip.show();
+                }
+            });
+    
+            return tooltip;
+        });
 
         function toggleWarrantyFields() {
             const warrantyChecked = document.getElementById('warranty').checked;
