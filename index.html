@@ -202,7 +202,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('20');
+                alert('21');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -476,7 +476,7 @@
             };
 
             //const messages = [carouselMessage, textMessage];
-            const messages = [textMessage];
+            const messages = [carouselMessage];
             // デバッグ用にメッセージ内容を確認
             alert(JSON.stringify(messages, null, 2));
 
