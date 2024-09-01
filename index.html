@@ -210,17 +210,10 @@
                     document.getElementById(fileId).addEventListener('change', function(event) {
                         const file = event.target.files[0];
                         if (file) {
-                            const fileType = file.type; // MIMEタイプを取得
-                            let fileExtension = '';
-                    
-                            if (fileType === 'image/jpeg' || fileType === 'image/jpg') {
+　                          const fileExtension = file.name.split('.').pop(); // 正しい拡張子を取得
+                            if (fileExtension == 'jpeg') {
                                 fileExtension = 'jpg';
-                            } else if (fileType === 'image/png') {
-                                fileExtension = 'png';
-                            } else {
-                                alert('サポートされていない画像形式です。JPEG,JPGまたはPNGを使用してください。');
-                                return;
-                            }
+                            } 
                             let fileName = `${userId}_${fileId}.${fileExtension}`;
                             uploadToS3(file, fileName).then(s3Url => {
                                 // アップロードされたファイルのURLをhiddenフィールドに設定
@@ -409,11 +402,21 @@
             }
 
             const urls = [];
-
+            const labels = {
+                'file1': '正面画像',
+                'file2': '全体画像',
+                'file3': '裏ぶた画像',
+                'file4': '付属品全体画像',
+                'file5': 'その他画像'
+            };
             ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
                 const fileUrl = document.getElementById(`${fileId}Url`).value;
                 if (fileUrl) {
-                    urls.push(fileUrl);
+                    urls.push({
+                        url: fileUrl,
+                        text: labels[fileId],
+                        label: labels[fileId]+'を見る'
+                    });
                 }
             });
 
@@ -444,15 +447,15 @@ ${document.getElementById('remarks').value}`
                 altText: '画像カルーセル',
                 template: {
                     type: 'carousel',
-                    columns: urls.slice(0, 5).map(url => ({
-                        thumbnailImageUrl: url,
-                        title: '画像',
-                        text: '査定画像',
+                    columns: urls.slice(0, 5).map(item => ({
+                        thumbnailImageUrl: item.url,
+                        title: '査定画像',
+                        text: item.text,
                         actions: [
                             {
                                 type: 'uri',
-                                label: '画像を見る',
-                                uri: url
+                                label: item.label,
+                                uri: item.url
                             }
                         ]
                     }))
