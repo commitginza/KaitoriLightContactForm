@@ -432,27 +432,44 @@
             // テキストメッセージの作成
             let strMsg = ``;
             if (brand != '') {
-                strMsg = `■ブランド\n　${brand}\n`;
+                strMsg = `■ブランド
+　${brand}
+`;
             }
             if (model != '') {
-                strMsg += `■モデル\n　${model}\n`;
+                strMsg += `■モデル
+　${model}
+`;
             }
             if (modelNumber != '') {
-                strMsg += `■型番\n　${modelNumber}\n`;
+                strMsg += `■型番
+　${modelNumber}
+`;
             }
-            strMsg += `■付属品\n　${accessories}\n`;
+            strMsg += `■付属品
+　${accessories}
+`;
             if (warrantyDate != '') {
-                strMsg += `■保証書日付\n　${warrantyDate}\n`;
+                strMsg += `■保証書日付
+　${warrantyDate}
+`;
             }
-            strMsg += `■他社査定\n　${otherAssessmentChecked ? otherAssessmentChecked.value : 'なし'}\n`;
+            strMsg += `■他社査定
+　${otherAssessmentChecked ? otherAssessmentChecked.value : 'なし'}
+ `;
             if (otherAssessmentChecked && otherAssessmentChecked.value === 'あり') {
-                strMsg += `■他社査定金額\n ${formattedAssessmentAmount}\n`;
+                strMsg += `■他社査定金額
+　${formattedAssessmentAmount}
+ `;
             }
             if (referenceUrl != '') {
-                strMsg += `■参考URL\n ${referenceUrl}\n`;
+                strMsg += `■参考URL
+　${referenceUrl}
+ `;
             }
             if (remarks != '') {
-                strMsg += `■備考\n ${remarks}`;
+                strMsg += `■備考
+　${remarks}`;
             }
             const textMessage = {
                 type: 'text',
