@@ -92,42 +92,52 @@
         <input type="hidden" id="lineUID">
         <hr>
         <div class="form-group">
-            <label for="file1">正面 <span class="required">*</span></label>
-            <input type="file" id="file1" accept="image/*" captre="camera" required>
-            <input type="hidden" id="file1Url">
-            <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line1.png' alt='正面画像の例' style='width:200px;'>">サンプル画像</a>
-            <div id="file1Error" class="error"></div>
+            <label>画像選択方法</label>
+            <div>
+                <div class="flex"><input type="radio" name="imageSelection" value="camera" id="radioCamera" onclick="toggleFileInputFields()" required><label for="radioCamera"> カメラ撮影 </label></div>
+                <div class="flex"><input type="radio" name="imageSelection" value="existing" id="radioExisting" onclick="toggleFileInputFields()" required><label for="radioExisting"> 撮影済み画像を使用 </label></div>
+            </div>
         </div>
         <hr>
-        <div class="form-group">
-            <label for="file2">全体 <span class="required">*</span></label>
-            <input type="file" id="file2" accept="image/*" captre="camera" required>
-            <input type="hidden" id="file2Url">
-            <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line2.png' alt='全体画像の例' style='width:200px;'>">サンプル画像</a>
-            <div id="file2Error" class="error"></div>
-        </div>
-        <hr>
-        <div class="form-group">
-            <label for="file3">裏ぶた <span class="required">*</span></label>
-            <input type="file" id="file3" accept="image/*" captre="camera" required>
-            <input type="hidden" id="file3Url">
-            <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line3.png' alt='裏ぶた画像の例' style='width:200px;'>">サンプル画像</a>
-            <div id="file3Error" class="error"></div>
-        </div>
-        <hr>
-        <div class="form-group">
-            <label for="file4">付属品全体 <span class="required">*</span></label>
-            <input type="file" id="file4" accept="image/*" captre="camera" required>
-            <input type="hidden" id="file4Url">
-            <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line4.png' alt='付属品画像の例' style='width:200px;'>">サンプル画像</a>
-            <div id="file4Error" class="error"></div>
-        </div>
-        <hr>
-        <div class="form-group">
-            <label for="file5">修理明細や補足画像</label>
-            <input type="file" id="file5" accept="image/*" captre="camera">
-            <input type="hidden" id="file5Url">
-            <div id="file5Error" class="error"></div>
+        <div id="fileGroup">
+            <div class="form-group">
+                <label for="file1">正面 <span class="required">*</span></label>
+                <input type="file" id="file1" accept="image/*" captre="camera">
+                <input type="hidden" id="file1Url">
+                <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line1.png' alt='正面画像の例' style='width:200px;'>">サンプル画像</a>
+                <div id="file1Error" class="error"></div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="file2">全体 <span class="required">*</span></label>
+                <input type="file" id="file2" accept="image/*" captre="camera">
+                <input type="hidden" id="file2Url">
+                <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line2.png' alt='全体画像の例' style='width:200px;'>">サンプル画像</a>
+                <div id="file2Error" class="error"></div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="file3">裏ぶた <span class="required">*</span></label>
+                <input type="file" id="file3" accept="image/*" captre="camera">
+                <input type="hidden" id="file3Url">
+                <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line3.png' alt='裏ぶた画像の例' style='width:200px;'>">サンプル画像</a>
+                <div id="file3Error" class="error"></div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="file4">付属品全体 <span class="required">*</span></label>
+                <input type="file" id="file4" accept="image/*" captre="camera">
+                <input type="hidden" id="file4Url">
+                <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line4.png' alt='付属品画像の例' style='width:200px;'>">サンプル画像</a>
+                <div id="file4Error" class="error"></div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label for="file5">修理明細や補足画像</label>
+                <input type="file" id="file5" accept="image/*" captre="camera">
+                <input type="hidden" id="file5Url">
+                <div id="file5Error" class="error"></div>
+            </div>
         </div>
         <hr>
         <div class="form-group">
@@ -205,7 +215,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('25');
+                alert('30');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -235,6 +245,19 @@
                 console.error('LIFF初期化エラーまたはユーザーID取得エラー:', err);
             });
         });
+
+        function toggleFileInputFields() {
+            const isCameraSelected = document.getElementById('radioCamera').checked;
+    
+            ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
+                const fileInput = document.getElementById(fileId);
+                if (isCameraSelected) {
+                    fileInput.required = true;
+                } else {
+                    fileInput.required = false;
+                }
+            });
+        }
 
         function uploadToS3(file, fileName, retryCount = 0) {
             return new Promise((resolve, reject) => {
@@ -309,23 +332,26 @@
 
         function validateForm() {
             let isValid = true;
+            const isCameraSelected = document.getElementById('radioCamera').checked;
 
-            // 必須項目のチェック
-            ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
-                const fileInput = document.getElementById(fileId);
-                const errorElement = document.getElementById(`${fileId}Error`);
-                const fileUrl = document.getElementById(`${fileId}Url`).value;
-        
-                if (!fileInput.value) {
-                    errorElement.textContent = 'このフィールドは必須です。';
-                    isValid = false;
-                } else if (!fileUrl) {
-                    errorElement.textContent = '正常にアップロードされませんでした。お手数ですがもう一度選択をお願いします。';
-                    isValid = false;
-                } else {
-                    errorElement.textContent = '';
-                }
-            });
+            // 必須項目のチェック（カメラ選択時のみ）
+            if (isCameraSelected) {
+                ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
+                    const fileInput = document.getElementById(fileId);
+                    const errorElement = document.getElementById(`${fileId}Error`);
+                    const fileUrl = document.getElementById(`${fileId}Url`).value;
+            
+                    if (!fileInput.value) {
+                        errorElement.textContent = 'このフィールドは必須です。';
+                        isValid = false;
+                    } else if (!fileUrl) {
+                        errorElement.textContent = '正常にアップロードされませんでした。お手数ですがもう一度選択をお願いします。';
+                        isValid = false;
+                    } else {
+                        errorElement.textContent = '';
+                    }
+                });                
+            }
 
             // 保証書がチェックされた場合の年と月のチェック
             if (document.getElementById('warranty').checked) {
