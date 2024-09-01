@@ -85,12 +85,15 @@
             <li>光の加減で文字盤色が異なる型番となることもあるため読み取れるように撮影してください。</li>
         </ul>
     </div>
+    <div style="text-align:center;">
+        <p style="color:red;font-size:14px;">カメラ撮影による送信のため、すでに撮影済みの場合は左下から直接画像を送信してください。</p>
+    </div>
     <form id="liffForm">
         <input type="hidden" id="lineUID">
         <hr>
         <div class="form-group">
             <label for="file1">正面 <span class="required">*</span></label>
-            <input type="file" id="file1" accept="image/*" required>
+            <input type="file" id="file1" accept="image/*" captre="camera" required>
             <input type="hidden" id="file1Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line1.png' alt='正面画像の例' style='width:200px;'>">サンプル画像</a>
             <div id="file1Error" class="error"></div>
@@ -98,7 +101,7 @@
         <hr>
         <div class="form-group">
             <label for="file2">全体 <span class="required">*</span></label>
-            <input type="file" id="file2" accept="image/*" required>
+            <input type="file" id="file2" accept="image/*" captre="camera" required>
             <input type="hidden" id="file2Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line2.png' alt='全体画像の例' style='width:200px;'>">サンプル画像</a>
             <div id="file2Error" class="error"></div>
@@ -106,7 +109,7 @@
         <hr>
         <div class="form-group">
             <label for="file3">裏ぶた <span class="required">*</span></label>
-            <input type="file" id="file3" accept="image/*" required>
+            <input type="file" id="file3" accept="image/*" captre="camera" required>
             <input type="hidden" id="file3Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line3.png' alt='裏ぶた画像の例' style='width:200px;'>">サンプル画像</a>
             <div id="file3Error" class="error"></div>
@@ -114,7 +117,7 @@
         <hr>
         <div class="form-group">
             <label for="file4">付属品全体 <span class="required">*</span></label>
-            <input type="file" id="file4" accept="image/*" required>
+            <input type="file" id="file4" accept="image/*" captre="camera" required>
             <input type="hidden" id="file4Url">
             <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line4.png' alt='付属品画像の例' style='width:200px;'>">サンプル画像</a>
             <div id="file4Error" class="error"></div>
@@ -122,7 +125,7 @@
         <hr>
         <div class="form-group">
             <label for="file5">修理明細や補足画像</label>
-            <input type="file" id="file5" accept="image/*">
+            <input type="file" id="file5" accept="image/*" captre="camera">
             <input type="hidden" id="file5Url">
             <div id="file5Error" class="error"></div>
         </div>
@@ -202,7 +205,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('22');
+                alert('25');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
