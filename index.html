@@ -395,7 +395,6 @@
             ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
                 const fileUrl = document.getElementById(`${fileId}Url`).value;
                 if (fileUrl) {
-                    alert(`fileUrl: ${fileUrl}`);
                     urls.push(fileUrl);
                 }
             });
@@ -403,15 +402,22 @@
             // テキストメッセージの作成
             const textMessage = {
                 type: 'text',
-                text: `
-ブランド: ${document.getElementById('brand').value}\n
-モデル: ${document.getElementById('model').value}\n
-型番: ${document.getElementById('modelNumber').value}\n
-付属品: ${getAccessories()}\n
-他社査定: ${document.querySelector('input[name="otherAssessment"]:checked') ? document.querySelector('input[name="otherAssessment"]:checked').value : 'なし'}\n
-他社査定金額: ${document.getElementById('assessmentAmount').value}\n
-参考URL: ${document.getElementById('url').value}\n
-備考: ${document.getElementById('remarks').value}`
+                text: `ブランド:
+　${document.getElementById('brand').value}\n
+モデル:
+　${document.getElementById('model').value}\n
+型番:
+　${document.getElementById('modelNumber').value}\n
+付属品:
+　${getAccessories()}\n
+他社査定:
+　${document.querySelector('input[name="otherAssessment"]:checked') ? document.querySelector('input[name="otherAssessment"]:checked').value : 'なし'}\n
+他社査定金額:
+　${document.getElementById('assessmentAmount').value}\n
+参考URL:
+　${document.getElementById('url').value}\n
+備考:
+　${document.getElementById('remarks').value}`
             };
 
             const imageMessages = urls.map(url => ({
@@ -420,7 +426,7 @@
                 previewImageUrl: url
             }));
 
-            const messages = [...imageMessages, textMessage];
+            const messages = [textMessage, ...imageMessages];
 
             // メッセージ送信
             liff.sendMessages(messages).then(() => {
