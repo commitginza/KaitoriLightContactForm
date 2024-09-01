@@ -428,13 +428,28 @@
 　${document.getElementById('remarks').value}`
             };
 
-            const imageMessages = urls.map(url => ({
-                type: 'image',
-                originalContentUrl: url,
-                previewImageUrl: url
-            }));
+            // カルーセルメッセージの作成
+            const carouselMessage = {
+                type: 'template',
+                altText: '画像カルーセル',
+                template: {
+                    type: 'carousel',
+                    columns: urls.slice(0, 5).map(url => ({
+                        thumbnailImageUrl: url,
+                        title: '画像',
+                        text: '査定画像',
+                        actions: [
+                            {
+                                type: 'uri',
+                                label: '画像を見る',
+                                uri: url
+                            }
+                        ]
+                    }))
+                }
+            };
 
-            const messages = [...imageMessages, textMessage];
+            const messages = [carouselMessage, textMessage];
 
             // メッセージ送信
             liff.sendMessages(messages).then(() => {
