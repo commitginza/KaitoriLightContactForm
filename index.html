@@ -202,7 +202,8 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('6');
+                alert('7');
+                alert('ok?');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -456,8 +457,8 @@
                         imageUrl: item.url || '',  // 画像URL
                         action: {
                             type: 'message',
-                            label: `${item.label}`,
-                            text: `${item.label}`
+                            label: item.label,
+                            text: item.label
                         }
                     }))
                 }
