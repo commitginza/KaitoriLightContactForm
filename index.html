@@ -202,7 +202,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('13');
+                alert('15');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -311,9 +311,13 @@
             ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
                 const fileInput = document.getElementById(fileId);
                 const errorElement = document.getElementById(`${fileId}Error`);
-
+                const fileUrl = document.getElementById(`${fileId}Url`).value;
+        
                 if (!fileInput.value) {
                     errorElement.textContent = 'このフィールドは必須です。';
+                    isValid = false;
+                } else if (!fileUrl) {
+                    errorElement.textContent = '正常にアップロードされませんでした。お手数ですがもう一度選択をお願いします。';
                     isValid = false;
                 } else {
                     errorElement.textContent = '';
@@ -380,6 +384,10 @@
         }
 
         function formatNumberWithCommas(number) {
+            // 数値でない場合、そのままリターンする
+            if (isNaN(number)) {
+                return number;
+            }
             return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
@@ -397,7 +405,6 @@
             };
             ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
                 const fileUrl = document.getElementById(`${fileId}Url`).value;
-                alert(`${fileId} :\n${fileUrl}`);
                 if (fileUrl) {
                     urls.push({
                         url: fileUrl,
@@ -425,27 +432,27 @@
             // テキストメッセージの作成
             let strMsg = ``;
             if (brand != '') {
-                strMsg = `ブランド:\n　${brand}\n`;
+                strMsg = `■ブランド\n　${brand}\n`;
             }
             if (model != '') {
-                strMsg += `モデル:\n　${model}\n`;
+                strMsg += `■モデル\n　${model}\n`;
             }
             if (modelNumber != '') {
-                strMsg += `型番:\n　${modelNumber}\n`;
+                strMsg += `■型番\n　${modelNumber}\n`;
             }
-            strMsg += `付属品:\n　${accessories}\n`;
+            strMsg += `■付属品\n　${accessories}\n`;
             if (warrantyDate != '') {
-                strMsg += `保証書日付:\n　${warrantyDate}\n`;
+                strMsg += `■保証書日付\n　${warrantyDate}\n`;
             }
-            strMsg += `他社査定:\n　${otherAssessmentChecked ? otherAssessmentChecked.value : 'なし'}\n`;
+            strMsg += `■他社査定\n　${otherAssessmentChecked ? otherAssessmentChecked.value : 'なし'}\n`;
             if (otherAssessmentChecked && otherAssessmentChecked.value === 'あり') {
-                strMsg += `他社査定金額:\n ${formattedAssessmentAmount}\n`;
+                strMsg += `■他社査定金額\n ${formattedAssessmentAmount}\n`;
             }
             if (referenceUrl != '') {
-                strMsg += `参考URL:\n ${referenceUrl}\n`;
+                strMsg += `■参考URL\n ${referenceUrl}\n`;
             }
             if (remarks != '') {
-                strMsg += `備考:\n ${remarks}`;
+                strMsg += `■備考\n ${remarks}`;
             }
             const textMessage = {
                 type: 'text',
