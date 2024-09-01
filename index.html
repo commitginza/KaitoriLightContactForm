@@ -457,7 +457,7 @@
                 template: {
                     type: 'image_carousel',
                     columns: urls.slice(0, 5).map(item => ({
-                        imageUrl: item.url || '',  // 画像URL
+                        imageUrl: item.url,
                         action: {
                             type: 'message',
                             label: item.label,
