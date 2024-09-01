@@ -468,8 +468,7 @@ ${document.getElementById('remarks').value}`
                             {
                                 type: isOfficialAccountUser ? 'uri' : 'message',
                                 label: isOfficialAccountUser ? `${item.label}を見る` : `${item.label}を確認しました`,
-                                uri: isOfficialAccountUser ? item.url : undefined,
-                                text: !isOfficialAccountUser ? `${item.text}を確認しました` : undefined
+                                uri: isOfficialAccountUser ? item.url : undefined
                             }
                         ]
                     }))
