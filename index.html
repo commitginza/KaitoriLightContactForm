@@ -395,6 +395,7 @@
             ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
                 const fileUrl = document.getElementById(`${fileId}Url`).value;
                 if (fileUrl) {
+                    alert(`fileUrl: ${fileUrl}`);
                     urls.push(fileUrl);
                 }
             });
@@ -429,6 +430,7 @@
                 alert('メッセージ送信完了およびファイル削除完了');
                 liff.closeWindow();
             }).catch(err => {
+                alert(`メッセージ送信失敗: ${err}`);
                 console.error('エラー:', err);
             });
         }
