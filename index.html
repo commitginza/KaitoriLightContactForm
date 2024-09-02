@@ -215,7 +215,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('31');
+                alert('32');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -510,10 +510,13 @@
                 }
             };
 
-            //const messages = [carouselMessage, textMessage];
-            const messages = [carouselMessage];
-            // デバッグ用にメッセージ内容を確認
-            alert(JSON.stringify(messages, null, 2));
+            // メッセージ配列の初期化
+            const messages = [textMessage];
+            
+            // カルーセルメッセージを追加する条件チェック
+            if (urls.length > 0) {
+                messages.unshift(carouselMessage);
+            }
 
             // メッセージ送信
             liff.sendMessages(messages).then(() => {
