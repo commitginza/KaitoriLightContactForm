@@ -216,7 +216,7 @@
             }).then(profile => {
                 const userId = profile.userId;
                 document.getElementById(`lineUID`).value = userId;
-                alert('2');
+                alert('3');
 
                 // 各ファイルinputにイベントリスナーを設定
                 ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
@@ -239,7 +239,7 @@
                                     console.error(`ファイルアップロードエラー (${fileId}):`, err);
                                 });
                             }).catch(err => {
-                                alert('事前署名付きURLの取得に失敗しました。 ${err}');
+                                alert(`事前署名付きURLの取得に失敗しました。 ${err}`);
                                 console.error('事前署名付きURL取得エラー:', err);
                             });
                         }
