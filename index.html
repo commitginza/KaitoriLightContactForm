@@ -215,7 +215,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('45');
+                alert('50');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -496,6 +496,22 @@
             };
             // カルーセルメッセージの作成
             // uri版
+            const carouselMessage = {
+                type: 'template',
+                altText: '画像カルーセル',
+                template: {
+                    type: 'image_carousel',
+                    columns: urls.slice(0, 5).map(item => ({
+                        imageUrl: item.url,
+                        action: {
+                            type: 'uri',
+                            label: item.label,
+                            uri: item.url
+                        }
+                    }))
+                }
+            };
+            // message版(なぜかinvalid error)
             // const carouselMessage = {
             //     type: 'template',
             //     altText: '画像カルーセル',
@@ -504,29 +520,13 @@
             //         columns: urls.slice(0, 5).map(item => ({
             //             imageUrl: item.url,
             //             action: {
-            //                 type: 'uri',
+            //                 type: 'message',
             //                 label: item.label,
-            //                 uri: 'https://lin.ee/hFqD1B5'
+            //                 text: item.label
             //             }
             //         }))
             //     }
             // };
-            // message版
-            const carouselMessage = {
-                type: 'template',
-                altText: '画像カルーセル',
-                template: {
-                    type: 'image_carousel',
-                    columns: urls.slice(0, 5).map(item => ({
-                        imageUrl: item.url,
-                        action: [{
-                            type: 'message',
-                            label: item.label,
-                            text: item.label
-                        }]
-                    }))
-                }
-            };
 
             // メッセージ配列の初期化
             const messages = [textMessage];
