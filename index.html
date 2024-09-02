@@ -99,10 +99,10 @@
             </div>
         </div>
         <hr>
-        <div id="fileGroup">
+        <div id="fileGroup" style="display:none;">
             <div class="form-group">
                 <label for="file1">正面 <span class="required">*</span></label>
-                <input type="file" id="file1" accept="image/*" captre="camera">
+                <input type="file" id="file1" accept="image/*" capture="environment">
                 <input type="hidden" id="file1Url">
                 <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line1.png' alt='正面画像の例' style='width:200px;'>">サンプル画像</a>
                 <div id="file1Error" class="error"></div>
@@ -110,7 +110,7 @@
             <hr>
             <div class="form-group">
                 <label for="file2">全体 <span class="required">*</span></label>
-                <input type="file" id="file2" accept="image/*" captre="camera">
+                <input type="file" id="file2" accept="image/*" capture="environment">
                 <input type="hidden" id="file2Url">
                 <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line2.png' alt='全体画像の例' style='width:200px;'>">サンプル画像</a>
                 <div id="file2Error" class="error"></div>
@@ -118,7 +118,7 @@
             <hr>
             <div class="form-group">
                 <label for="file3">裏ぶた <span class="required">*</span></label>
-                <input type="file" id="file3" accept="image/*" captre="camera">
+                <input type="file" id="file3" accept="image/*" capture="environment">
                 <input type="hidden" id="file3Url">
                 <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line3.png' alt='裏ぶた画像の例' style='width:200px;'>">サンプル画像</a>
                 <div id="file3Error" class="error"></div>
@@ -126,7 +126,7 @@
             <hr>
             <div class="form-group">
                 <label for="file4">付属品全体 <span class="required">*</span></label>
-                <input type="file" id="file4" accept="image/*" captre="camera">
+                <input type="file" id="file4" accept="image/*" capture="environment">
                 <input type="hidden" id="file4Url">
                 <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line4.png' alt='付属品画像の例' style='width:200px;'>">サンプル画像</a>
                 <div id="file4Error" class="error"></div>
@@ -134,7 +134,7 @@
             <hr>
             <div class="form-group">
                 <label for="file5">修理明細や補足画像</label>
-                <input type="file" id="file5" accept="image/*" captre="camera">
+                <input type="file" id="file5" accept="image/*" capture="environment">
                 <input type="hidden" id="file5Url">
                 <div id="file5Error" class="error"></div>
             </div>
@@ -215,7 +215,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('30');
+                alert('31');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -248,9 +248,16 @@
 
         function toggleFileInputFields() {
             const isCameraSelected = document.getElementById('radioCamera').checked;
+            const fileGroup = document.getElementById('fileGroup');
+            if (isCameraSelected) {
+                fileGroup.style.display = 'inline';
+            } else {
+                fileGroup.style.display = 'none';
+            }
     
             ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
                 const fileInput = document.getElementById(fileId);
+                const fileGroup
                 if (isCameraSelected) {
                     fileInput.required = true;
                 } else {
