@@ -215,7 +215,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('41');
+                alert('42');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -495,6 +495,23 @@
                 text: strMsg
             };
             // カルーセルメッセージの作成
+            // uri版
+            // const carouselMessage = {
+            //     type: 'template',
+            //     altText: '画像カルーセル',
+            //     template: {
+            //         type: 'image_carousel',
+            //         columns: urls.slice(0, 5).map(item => ({
+            //             imageUrl: item.url,
+            //             action: {
+            //                 type: 'uri',
+            //                 label: item.label,
+            //                 uri: 'https://lin.ee/hFqD1B5'
+            //             }
+            //         }))
+            //     }
+            // };
+            // message版
             const carouselMessage = {
                 type: 'template',
                 altText: '画像カルーセル',
@@ -502,11 +519,11 @@
                     type: 'image_carousel',
                     columns: urls.slice(0, 5).map(item => ({
                         imageUrl: item.url,
-                        action: {
-                            type: 'uri',
+                        action: [{
+                            type: 'message',
                             label: item.label,
-                            uri: 'https://lin.ee/hFqD1B5'
-                        }
+                            text: item.label
+                        }]
                     }))
                 }
             };
