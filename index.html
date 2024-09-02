@@ -81,8 +81,8 @@
         <ul style="padding-left: 25px;font-size: 12px;">
             <li>下記必要事項を入力してもらうことでやりとりを少なくスムーズに査定が可能です。</li>
             <li>なるべく明るい場所でピントを合わせてください。</li>
-            <li>保証書（ギャランティーカード）がある場合は、「型番（リファレンス）」や「商品名」が読み取れるように撮影してください。</li>
             <li>光の加減で文字盤色が異なる型番となることもあるため読み取れるように撮影してください。</li>
+            <li>保証書（ギャランティーカード）がある場合は、「型番（リファレンス）」や「商品名」が読み取れるように撮影してください。</li>
         </ul>
     </div>
     <div style="text-align:center;">
@@ -269,7 +269,6 @@
                 reader.onload = () => {
                     const base64Data = reader.result.split(',')[1];
                     const base64Size = (base64Data.length * (3/4)) - ((base64Data.indexOf('=') > 0) ? (base64Data.length - base64Data.indexOf('=')) : 0);
-                    alert('base64Data.length:\n' + base64Data.length + '\nbase64Size:\n' + base64Size);
                     // 10MBをバイト変換
                     const maxSize = 10 * 1024 * 1024;
                     if (base64Size > maxSize) {
