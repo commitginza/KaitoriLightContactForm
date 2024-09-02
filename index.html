@@ -94,12 +94,12 @@
         <div class="form-group">
             <label>画像選択方法</label>
             <div>
-                <div class="flex"><input type="radio" name="imageSelection" value="camera" id="radioCamera" onclick="toggleFileInputFields()" required><label for="radioCamera"> カメラ撮影 </label></div>
-                <div class="flex"><input type="radio" name="imageSelection" value="existing" id="radioExisting" onclick="toggleFileInputFields()" required><label for="radioExisting"> 撮影済み画像を使用 </label></div>
+                <div class="flex"><input type="radio" name="imageSelection" value="camera" id="radioCamera" onclick="toggleFileInputFields()" checked><label for="radioCamera"> カメラ撮影 </label></div>
+                <div class="flex"><input type="radio" name="imageSelection" value="existing" id="radioExisting" onclick="toggleFileInputFields()"><label for="radioExisting"> 撮影済み画像を使用 </label></div>
             </div>
         </div>
         <hr>
-        <div id="fileGroup" style="display:none;">
+        <div id="fileGroup">
             <div class="form-group">
                 <label for="file1">正面 <span class="required">*</span></label>
                 <input type="file" id="file1" accept="image/*" capture="environment">
@@ -215,7 +215,7 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('32');
+                alert('33');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
