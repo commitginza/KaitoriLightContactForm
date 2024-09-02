@@ -216,24 +216,31 @@
             }).then(profile => {
                 const userId = profile.userId;
                 document.getElementById(`lineUID`).value = userId;
+                alert('1');
 
                 // 各ファイルinputにイベントリスナーを設定
                 ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
                     document.getElementById(fileId).addEventListener('change', function(event) {
                         const file = event.target.files[0];
                         if (file) {
-　                          const fileExtension = file.name.split('.').pop(); // 正しい拡張子を取得
+                            const fileExtension = file.name.split('.').pop(); // 正しい拡張子を取得
                             if (fileExtension == 'jpeg') {
                                 fileExtension = 'jpg';
                             } 
                             const timestamp = new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14); // 秒までのタイムスタンプを生成
                             let fileName = `KAITORI_${userId}_${fileId}_${timestamp}.${fileExtension}`;
-                            uploadToS3(file, fileName).then(s3Url => {
-                                // アップロードされたファイルのURLをhiddenフィールドに設定
-                                document.getElementById(`${fileId}Url`).value = s3Url;
+                            
+                            // 事前署名付きURLを取得してアップロード
+                            getPresignedUrl(fileName).then(presignedUrl => {
+                                uploadToS3(file, presignedUrl).then(s3Url => {
+                                    document.getElementById(`${fileId}Url`).value = s3Url;
+                                }).catch(err => {
+                                    alert('ファイルアップロードに失敗しました。');
+                                    console.error(`ファイルアップロードエラー (${fileId}):`, err);
+                                });
                             }).catch(err => {
-                                alert(`時計本体または付属品を直接撮影していない可能性があります。もし時計本体または付属品を直接撮影している場合、左下のキーボードマークから「＞」を押して直接送信してください。`);
-                                console.error(`ファイルアップロードエラー (${fileId}):`, err);
+                                alert('事前署名付きURLの取得に失敗しました。');
+                                console.error('事前署名付きURL取得エラー:', err);
                             });
                         }
                     });
@@ -242,6 +249,33 @@
                 console.error('LIFF初期化エラーまたはユーザーID取得エラー:', err);
             });
         });
+
+        function getPresignedUrl(fileName) {
+            return fetch('https://d60a2nlem7.execute-api.ap-northeast-1.amazonaws.com/prod/preSignedUrlS3', { // API Gatewayのエンドポイントに変更
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fileName: fileName })
+            }).then(response => response.json()).then(data => {
+                return data.presignedUrl; // 事前署名付きURLを返す
+            });
+        }
+
+        function uploadToS3(file, presignedUrl) {
+            return fetch(presignedUrl, {
+                method: 'PUT',
+                body: file,
+                headers: {
+                    'Content-Type': file.type
+                }
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return presignedUrl.split('?')[0]; // S3のファイルURLを返す
+            });
+        }
 
         function toggleFileInputFields() {
             const isCameraSelected = document.getElementById('radioCamera').checked;
@@ -259,77 +293,6 @@
                 } else {
                     fileInput.required = false;
                 }
-            });
-        }
-
-        function uploadToS3(file, fileName, retryCount = 0) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => {
-                    const base64Data = reader.result.split(',')[1];
-                    const base64Size = (base64Data.length * (3/4)) - ((base64Data.indexOf('=') > 0) ? (base64Data.length - base64Data.indexOf('=')) : 0);
-                    // 10MBをバイト変換
-                    const maxSize = 10 * 1024 * 1024;
-                    if (base64Size > maxSize) {
-                        alert('10MB未満の画像を選択してください。');
-                        reject('File size exceeds 10MB.');
-                        return;
-                    }
-
-                    const payload = JSON.stringify({
-                        file: base64Data,
-                        fileName: fileName
-                    });
-
-                    fetch('https://d60a2nlem7.execute-api.ap-northeast-1.amazonaws.com/prod/upload', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: payload
-                    }).then(response => {
-                      // ステータスコードの確認
-                      if (!response.ok) {
-                          throw new Error(`HTTP error! status: ${response.status}`);
-                      }
-                      return response.json();
-                    }).then(data => {
-                      if (data.url) {
-                          resolve(data.url);  // アップロードされたファイルのS3 URL
-                      } else {
-                          reject('ファイルアップロード失敗');
-                      }
-                    }).catch(err => {
-                        if (retryCount < 3) {  // 3回まで再試行
-                            console.warn(`ファイルアップロード失敗、再試行 (${retryCount + 1}/3): ${err}`);
-                            setTimeout(() => {
-                                uploadToS3(file, fileName, retryCount + 1).then(resolve).catch(reject);
-                            }, 1000);
-                        } else {
-                            reject(err);
-                        }
-                    });
-                }
-                reader.onerror = error => {
-                    reject(error);
-                }
-
-            });
-        }
-
-        function deleteUploadedFiles(urls) {
-            return fetch('https://d60a2nlem7.execute-api.ap-northeast-1.amazonaws.com/prod/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ urls: urls })
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error('ファイル削除失敗');
-                }
-                return response.json();
             });
         }
 
