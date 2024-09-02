@@ -212,7 +212,6 @@
             liff.init({ liffId: "2006144295-P0Q5xnmr" }).then(() => {
                 // LIFF初期化成功
                 console.log('LIFF initialized successfully.');
-                alert('55');
                 return liff.getProfile();
             }).then(profile => {
                 const userId = profile.userId;
@@ -228,7 +227,7 @@
                                 fileExtension = 'jpg';
                             } 
                             const timestamp = new Date().toISOString().replace(/[-:T.]/g, '').slice(0, 14); // 秒までのタイムスタンプを生成
-                            let fileName = `${userId}_${fileId}_${timestamp}.${fileExtension}`;
+                            let fileName = `KAITORI_${userId}_${fileId}_${timestamp}.${fileExtension}`;
                             uploadToS3(file, fileName).then(s3Url => {
                                 // アップロードされたファイルのURLをhiddenフィールドに設定
                                 document.getElementById(`${fileId}Url`).value = s3Url;
