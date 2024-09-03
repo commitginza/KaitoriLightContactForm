@@ -77,16 +77,13 @@
 </head>
 <body>
     <div style="background-color: #cbcbcb;border-radius: 0 0 22px 22px;padding: 1% 3%;margin-bottom: 10%;">
-        <p style="font-weight: bold;">スムーズな高額査定のポイント</p>
-        <ul style="padding-left: 25px;font-size: 12px;">
+        <p id="toggleButton" style="font-weight: bold; cursor: pointer;display: flex; align-items: center; justify-content: space-between;">スムーズな高額査定のポイント<span id="arrow" style="font-size: 16px;">&#9660;</span></p>
+        <ul id="pointList" style="padding-left: 25px;font-size: 12px; display: none;">
             <li>下記必要事項を入力してもらうことでやりとりを少なくスムーズに査定が可能です。</li>
             <li>なるべく明るい場所でピントを合わせてください。</li>
             <li>光の加減で文字盤色が異なる型番となることもあるため読み取れるように撮影してください。</li>
             <li>保証書（ギャランティーカード）がある場合は、「型番（リファレンス）」や「商品名」が読み取れるように撮影してください。</li>
         </ul>
-    </div>
-    <div style="text-align:center;">
-        <p style="color:red;font-size:14px;">カメラ撮影による送信のため、すでに撮影済みの場合はフォーム送信後、左下のキーボードマークから「＞」マークを押して直接画像を送信してください。</p>
     </div>
     <form id="liffForm">
         <input type="hidden" id="lineUID">
@@ -96,6 +93,16 @@
             <div>
                 <div class="flex"><input type="radio" name="imageSelection" value="camera" id="radioCamera" onclick="toggleFileInputFields()" checked><label for="radioCamera"> カメラ撮影 </label></div>
                 <div class="flex"><input type="radio" name="imageSelection" value="existing" id="radioExisting" onclick="toggleFileInputFields()"><label for="radioExisting"> 撮影済み画像を使用 </label></div>
+            </div>
+            <div id="cameraInstructions" style="text-align:center; padding:10px;">
+                <p style="color:red; font-size:14px;">
+                    *Androidのバージョンによっては、カメラ起動とメディア選択が表示されるため、カメラ起動を押してください。
+                </p>
+            </div>
+            <div id="existingInstructions" style="text-align:center; padding:10px; display:none;">
+                <p style="color:red; font-size:14px;">
+                    *撮影済みの画像を送信する際は、フォーム送信後に左下のキーボードマークを押し、「＞」を選択して直接画像を送信してください。
+                </p>
             </div>
         </div>
         <hr>
@@ -247,6 +254,18 @@
             }).catch(err => {
                 console.error('LIFF初期化エラーまたはユーザーID取得エラー:', err);
             });
+
+            document.getElementById("toggleButton").addEventListener("click", function() {
+                var pointList = document.getElementById("pointList");
+                var arrow = document.getElementById("arrow");
+                if (pointList.style.display === "none") {
+                    pointList.style.display = "block";
+                    arrow.innerHTML = "&#9650;";  // 上向き矢印に変更
+                } else {
+                    pointList.style.display = "none";
+                    arrow.innerHTML = "&#9660;";  // 下向き矢印に戻す
+                }
+            });
         });
 
         function getPresignedUrl(fileName) {
@@ -281,8 +300,12 @@
             const fileGroup = document.getElementById('fileGroup');
             if (isCameraSelected) {
                 fileGroup.style.display = 'inline';
+                document.getElementById('cameraInstructions').style.display = 'inline';
+                document.getElementById('existingInstructions').style.display = 'none';
             } else {
                 fileGroup.style.display = 'none';
+                document.getElementById('cameraInstructions').style.display = 'none';
+                document.getElementById('existingInstructions').style.display = 'inline';
             }
     
             ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
