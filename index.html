@@ -216,7 +216,6 @@
             }).then(profile => {
                 const userId = profile.userId;
                 document.getElementById(`lineUID`).value = userId;
-                alert('3');
 
                 // 各ファイルinputにイベントリスナーを設定
                 ['file1', 'file2', 'file3', 'file4', 'file5'].forEach(fileId => {
@@ -235,7 +234,7 @@
                                 uploadToS3(file, presignedUrl).then(s3Url => {
                                     document.getElementById(`${fileId}Url`).value = s3Url;
                                 }).catch(err => {
-                                    alert(`ファイルアップロードに失敗しました。 ${err}`);
+                                    alert(`ファイルアップロード時に予期せぬエラーが起きました。再度撮影ををお願いします。 ${err}`);
                                     console.error(`ファイルアップロードエラー (${fileId}):`, err);
                                 });
                             }).catch(err => {
