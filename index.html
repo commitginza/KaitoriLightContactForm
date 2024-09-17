@@ -115,21 +115,21 @@
             </div>
             <hr>
             <div class="form-group">
-                <label for="file2">全体 <span class="required">*</span></label>
+                <label for="file2">全体</label>
                 <input type="file" id="file2" accept="image/*" capture="environment">
                 <input type="hidden" id="file2Url">
                 <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line2.png' alt='全体画像の例' style='width:200px;'>">サンプル画像</a>
             </div>
             <hr>
             <div class="form-group">
-                <label for="file3">裏ぶた <span class="required">*</span></label>
+                <label for="file3">裏ぶた</label>
                 <input type="file" id="file3" accept="image/*" capture="environment">
                 <input type="hidden" id="file3Url">
                 <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line3.png' alt='裏ぶた画像の例' style='width:200px;'>">サンプル画像</a>
             </div>
             <hr>
             <div class="form-group">
-                <label for="file4">付属品全体 <span class="required">*</span></label>
+                <label for="file4">付属品全体</label>
                 <input type="file" id="file4" accept="image/*" capture="environment">
                 <input type="hidden" id="file4Url">
                 <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line4.png' alt='付属品画像の例' style='width:200px;'>">サンプル画像</a>
@@ -190,6 +190,11 @@
                     <input type="tel" id="assessmentAmount">
                 </div>
             </div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <label for="hope_amount">ご希望金額</label>
+            <input type="tel" id="hope_amount">
         </div>
         <hr>
         <div class="form-group">
@@ -308,7 +313,7 @@
                 document.getElementById('existingInstructions').style.display = 'inline';
             }
     
-            ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
+            ['file1'].forEach(fileId => {
                 const fileInput = document.getElementById(fileId);
                 if (isCameraSelected) {
                     fileInput.required = true;
@@ -335,12 +340,6 @@
                     } else if (!fileUrl) {
                         if (fileId == 'file1') {
                             errorElement.textContent = '正面画像が正常にアップロードされませんでした。お手数ですがもう一度撮影をお願いいたします。';
-                        } else if (fileId == 'file2') {
-                            errorElement.textContent = '全体画像が正常にアップロードされませんでした。お手数ですがもう一度撮影をお願いいたします。';
-                        } else if (fileId == 'file3') {
-                            errorElement.textContent = '裏ぶた画像が正常にアップロードされませんでした。お手数ですがもう一度撮影をお願いいたします。';
-                        } else if (fileId == 'file4') {
-                            errorElement.textContent = '付属品全体画像が正常にアップロードされませんでした。お手数ですがもう一度撮影をお願いいたします。';
                         }
                         isValid = false;
                     } else {
@@ -446,6 +445,7 @@
             let warrantyMonth = document.getElementById('warrantyMonth').value;
             let otherAssessmentChecked = document.querySelector('input[name="otherAssessment"]:checked');
             let assessmentAmount = document.getElementById('assessmentAmount').value;
+            let hope_amount = document.getElementById('hope_amount').value;
             let formattedAssessmentAmount = assessmentAmount ? `${formatNumberWithCommas(assessmentAmount)}円` : '';
             let remarks = document.getElementById('remarks').value ? document.getElementById('remarks').value : '';
         
@@ -472,6 +472,9 @@
             if (otherAssessmentChecked && otherAssessmentChecked.value === 'あり') {
                 strMsg += `■他社査定金額\n　${formattedAssessmentAmount}\n`;
             }
+            if (hope_amount != '') {
+                strMsg += `■ご希望金額\n　${hope_amount}`;
+            }
             if (remarks != '') {
                 strMsg += `■備考\n　${remarks}`;
             }
@@ -496,22 +499,6 @@
                     }))
                 }
             };
-            // message版(なぜかinvalid error)
-            // const carouselMessage = {
-            //     type: 'template',
-            //     altText: '画像カルーセル',
-            //     template: {
-            //         type: 'image_carousel',
-            //         columns: urls.slice(0, 5).map(item => ({
-            //             imageUrl: item.url,
-            //             action: {
-            //                 type: 'message',
-            //                 label: item.label,
-            //                 text: item.label
-            //             }
-            //         }))
-            //     }
-            // };
 
             // メッセージ配列の初期化
             const messages = [textMessage];
