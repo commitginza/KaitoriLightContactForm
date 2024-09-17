@@ -329,7 +329,7 @@
 
             // 必須項目のチェック（カメラ選択時のみ）
             if (isCameraSelected) {
-                ['file1', 'file2', 'file3', 'file4'].forEach(fileId => {
+                ['file1'].forEach(fileId => {
                     const fileInput = document.getElementById(fileId);
                     const errorElement = document.getElementById(`${fileId}Error`);
                     const fileUrl = document.getElementById(`${fileId}Url`).value;
