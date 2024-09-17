@@ -108,7 +108,7 @@
         <hr>
         <div id="fileGroup">
             <div class="form-group">
-                <label for="file1">正面 <span class="required">*</span></label>
+                <label for="file1">正面</label>
                 <input type="file" id="file1" accept="image/*" capture="environment">
                 <input type="hidden" id="file1Url">
                 <a class="helpIcon" data-bs-toggle="tooltip" data-bs-html="true" title="<img src='https://watchimg.s3.ap-northeast-1.amazonaws.com/kaitori_line1.png' alt='正面画像の例' style='width:200px;'>">サンプル画像</a>
@@ -313,40 +313,40 @@
                 document.getElementById('existingInstructions').style.display = 'inline';
             }
     
-            ['file1'].forEach(fileId => {
-                const fileInput = document.getElementById(fileId);
-                if (isCameraSelected) {
-                    fileInput.required = true;
-                } else {
-                    fileInput.required = false;
-                }
-            });
+            //['file1'].forEach(fileId => {
+            //    const fileInput = document.getElementById(fileId);
+            //    if (isCameraSelected) {
+            //        fileInput.required = true;
+            //    } else {
+            //        fileInput.required = false;
+            //    }
+            //});
         }
 
         function validateForm() {
             let isValid = true;
-            const isCameraSelected = document.getElementById('radioCamera').checked;
+            //const isCameraSelected = document.getElementById('radioCamera').checked;
 
             // 必須項目のチェック（カメラ選択時のみ）
-            if (isCameraSelected) {
-                ['file1'].forEach(fileId => {
-                    const fileInput = document.getElementById(fileId);
-                    const errorElement = document.getElementById(`${fileId}Error`);
-                    const fileUrl = document.getElementById(`${fileId}Url`).value;
-            
-                    if (!fileInput.value) {
-                        errorElement.textContent = 'このフィールドは必須です。';
-                        isValid = false;
-                    } else if (!fileUrl) {
-                        if (fileId == 'file1') {
-                            errorElement.textContent = '正面画像が正常にアップロードされませんでした。お手数ですがもう一度撮影をお願いいたします。';
-                        }
-                        isValid = false;
-                    } else {
-                        errorElement.textContent = '';
-                    }
-                });                
-            }
+            //if (isCameraSelected) {
+            //    ['file1'].forEach(fileId => {
+            //        const fileInput = document.getElementById(fileId);
+            //        const errorElement = document.getElementById(`${fileId}Error`);
+            //        const fileUrl = document.getElementById(`${fileId}Url`).value;
+            //
+            //        if (!fileInput.value) {
+            //            errorElement.textContent = 'このフィールドは必須です。';
+            //            isValid = false;
+            //        } else if (!fileUrl) {
+            //            if (fileId == 'file1') {
+            //                errorElement.textContent = '正面画像が正常にアップロードされませんでした。お手数ですがもう一度撮影をお願いいたします。';
+            //            }
+            //            isValid = false;
+            //        } else {
+            //            errorElement.textContent = '';
+            //        }
+            //    });                
+            //}
 
             // 保証書がチェックされた場合の年と月のチェック
             if (document.getElementById('warranty').checked) {
