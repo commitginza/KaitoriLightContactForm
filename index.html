@@ -186,7 +186,7 @@
             </div>
             <div id="assessmentAmountField" style="display: none;">
                 <div class="form-group">
-                    <label for="assessmentAmount">他社査定金額 <span class="required">*</span></label>
+                    <label for="assessmentAmount">他社査定金額</label>
                     <input type="tel" id="assessmentAmount">
                 </div>
             </div>
@@ -381,17 +381,17 @@
                 assessmentError.textContent = '';
 
                 // 他社査定が「あり」の場合の査定金額のチェック
-                if (assessment.value === 'あり') {
-                    const assessmentAmount = document.getElementById('assessmentAmount').value;
-                    if (!assessmentAmount) {
-                        assessmentAmountError.textContent = '他社査定金額を入力してください。';
-                        isValid = false;
-                    } else {
-                        assessmentAmountError.textContent = '';
-                    }
-                } else {
-                    assessmentAmountError.textContent = '';
-                }
+                //if (assessment.value === 'あり') {
+                //    const assessmentAmount = document.getElementById('assessmentAmount').value;
+                //    if (!assessmentAmount) {
+                //        assessmentAmountError.textContent = '他社査定金額を入力してください。';
+                //        isValid = false;
+                //    } else {
+                //        assessmentAmountError.textContent = '';
+                //    }
+                //} else {
+                //    assessmentAmountError.textContent = '';
+                //}
             }
 
             // 付属品のチェックボックスが1つも選択されていない場合
