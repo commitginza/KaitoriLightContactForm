@@ -445,8 +445,9 @@
             let warrantyMonth = document.getElementById('warrantyMonth').value;
             let otherAssessmentChecked = document.querySelector('input[name="otherAssessment"]:checked');
             let assessmentAmount = document.getElementById('assessmentAmount').value;
-            let hope_amount = document.getElementById('hope_amount').value;
             let formattedAssessmentAmount = assessmentAmount ? `${formatNumberWithCommas(assessmentAmount)}円` : '';
+            let hope_amount = document.getElementById('hope_amount').value;
+            let formattedHopeAmount = hope_amount ? `${formatNumberWithCommas(hope_amount)}円` : '';
             let remarks = document.getElementById('remarks').value ? document.getElementById('remarks').value : '';
         
             let warrantyDate = '';
@@ -473,7 +474,7 @@
                 strMsg += `■他社査定金額\n　${formattedAssessmentAmount}\n`;
             }
             if (hope_amount != '') {
-                strMsg += `■ご希望金額\n　${hope_amount}\n`;
+                strMsg += `■ご希望金額\n　${formattedHopeAmount}\n`;
             }
             if (remarks != '') {
                 strMsg += `■備考\n　${remarks}`;
