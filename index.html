@@ -198,6 +198,14 @@
         </div>
         <hr>
         <div class="form-group">
+            <label for="item_state">状態</label>
+            <select id="item_state">
+                <option value="中古">中古</option>
+                <option value="未使用">未使用</option>
+            </select>
+        </div>
+        <hr>
+        <div class="form-group">
             <label for="remarks">備考</label>
             <textarea id="remarks" rows="4" placeholder="その他の情報を入力してください"></textarea>
         </div>
@@ -448,6 +456,7 @@
             let formattedAssessmentAmount = assessmentAmount ? `${formatNumberWithCommas(assessmentAmount)}円` : '';
             let hope_amount = document.getElementById('hope_amount').value;
             let formattedHopeAmount = hope_amount ? `${formatNumberWithCommas(hope_amount)}円` : '';
+            let item_state = document.getElementById('item_state').value;
             let remarks = document.getElementById('remarks').value ? document.getElementById('remarks').value : '';
         
             let warrantyDate = '';
@@ -475,6 +484,9 @@
             }
             if (hope_amount != '') {
                 strMsg += `■ご希望金額\n　${formattedHopeAmount}\n`;
+            }
+            if (item_state != '') {
+                strMsg += `■状態\n　${item_state}\n`;
             }
             if (remarks != '') {
                 strMsg += `■備考\n　${remarks}`;
